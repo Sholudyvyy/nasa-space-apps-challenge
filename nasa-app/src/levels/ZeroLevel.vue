@@ -2,7 +2,13 @@
   <div class="zero-level__background">
     <div class="zero-level__main"/>
 
-    <Message />
+    <div class="zero-level__message">
+      <Message
+        text="Hello, I am Sem. I am a friendly alien. I am here to help you."
+      />
+
+      <img src="@/assets/images/moskot.png" alt="moskot" class="moskot"/>
+    </div>
   </div>
 </template>
 
@@ -24,6 +30,14 @@ $animation-duration: 16s;
   box-shadow: $shadows;
 }
 
+.moskot {
+  position: fixed;
+  bottom: -50px;
+  right: -80px;
+  width: 150px;
+  height: 150px;
+}
+
 // Main Styles
 .zero-level {
   &__background {
@@ -32,6 +46,13 @@ $animation-duration: 16s;
     width: 100%;
     overflow: hidden;
     position: relative;
+  }
+
+  &__message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
 
   &__main {
