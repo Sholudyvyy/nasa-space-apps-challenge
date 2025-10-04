@@ -1,9 +1,21 @@
 <template>
-  <h1>You did it!</h1>
-  <p>
-    Visit <a href="https://vuejs.org/" target="_blank" rel="noopener">vuejs.org</a> to read the
-    documentation
-  </p>
+  <div class="level-container">
+    <h1>Level 1: Mission Introduction</h1>
+    <div class="level-info">
+      <h2>Mission Overview</h2>
+      <p>Welcome to your first NASA mission! This is where your space exploration journey begins.</p>
+      
+      <h3>Objectives:</h3>
+      <ul>
+        <li>Learn basic space navigation</li>
+        <li>Understand mission protocols</li>
+        <li>Complete initial training modules</li>
+      </ul>
+      
+      <h3>Difficulty: Beginner</h3>
+      <p>Estimated completion time: 5-10 minutes</p>
+    </div>
+  </div>
 </template>
 
 <script setup></script>
