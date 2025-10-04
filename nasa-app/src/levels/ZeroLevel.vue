@@ -1,6 +1,6 @@
 <template>
   <div class="zero-level__background">
-    <div class="zero-level__main"></div>
+    <div class="zero-level__main"/>
   </div>
 </template>
 
@@ -125,99 +125,7 @@ $animation-duration: 16s;
       -16vw 17vh 0px 0px $star-color,
       18vw 27vh 0px 1px $star-color,
       -8vw -10vh 1px 1px $star-color;
-    
-    // Layer 2: Secondary stars (commented in original)
-    // Uncomment the line below to add a second layer of stars
-    /*
-    box-shadow: 
-      24vw 9vh 1px 0px $star-color,
-      12vw -24vh 0px 1px $star-color,
-      -45vw -22vh 0px 0px $star-color,
-      -37vw -40vh 0px 1px $star-color,
-      29vw 19vh 0px 1px $star-color,
-      4vw -8vh 0px 1px $star-color,
-      -5vw 21vh 1px 1px $star-color,
-      -27vw 26vh 1px 1px $star-color,
-      -47vw -3vh 1px 1px $star-color,
-      -28vw -30vh 0px 1px $star-color,
-      -43vw -27vh 0px 1px $star-color,
-      4vw 22vh 1px 1px $star-color,
-      36vw 23vh 0px 0px $star-color,
-      -21vw 24vh 1px 1px $star-color,
-      -16vw 2vh 1px 0px $star-color,
-      -16vw -6vh 0px 0px $star-color,
-      5vw 26vh 0px 0px $star-color,
-      -34vw 41vh 0px 0px $star-color,
-      1vw 42vh 1px 1px $star-color,
-      11vw -13vh 1px 1px $star-color,
-      48vw -8vh 1px 0px $star-color,
-      22vw -15vh 0px 0px $star-color,
-      45vw 49vh 0px 0px $star-color,
-      43vw -27vh 1px 1px $star-color,
-      20vw -2vh 0px 0px $star-color,
-      8vw 22vh 0px 1px $star-color,
-      39vw 48vh 1px 1px $star-color,
-      -21vw -11vh 0px 1px $star-color,
-      -40vw 45vh 0px 1px $star-color,
-      11vw -30vh 1px 0px $star-color,
-      26vw 30vh 1px 0px $star-color,
-      45vw -29vh 0px 1px $star-color,
-      -2vw 18vh 0px 0px $star-color,
-      -29vw -45vh 1px 0px $star-color,
-      -7vw -27vh 1px 1px $star-color,
-      42vw 24vh 0px 0px $star-color,
-      45vw -48vh 1px 0px $star-color,
-      -36vw -18vh 0px 0px $star-color,
-      -44vw 13vh 0px 1px $star-color,
-      36vw 16vh 0px 1px $star-color,
-      40vw 24vh 0px 0px $star-color,
-      18vw 11vh 0px 0px $star-color,
-      -15vw -23vh 1px 0px $star-color,
-      -24vw 48vh 0px 1px $star-color,
-      27vw -45vh 1px 0px $star-color,
-      -2vw -24vh 0px 1px $star-color,
-      -15vw -28vh 0px 0px $star-color,
-      -43vw 13vh 1px 0px $star-color,
-      7vw 27vh 1px 0px $star-color,
-      47vw 5vh 0px 0px $star-color,
-      -45vw 15vh 1px 1px $star-color,
-      -5vw -28vh 0px 1px $star-color,
-      38vw 25vh 1px 1px $star-color,
-      -39vw -1vh 1px 0px $star-color,
-      5vw 0vh 1px 0px $star-color,
-      49vw 13vh 0px 0px $star-color,
-      48vw 10vh 0px 1px $star-color,
-      19vw -28vh 0px 0px $star-color,
-      4vw 7vh 0px 0px $star-color,
-      21vw 21vh 1px 1px $star-color,
-      -15vw -15vh 0px 1px $star-color,
-      -6vw -42vh 1px 0px $star-color,
-      -15vw 48vh 1px 1px $star-color,
-      -23vw 25vh 1px 1px $star-color,
-      -48vw 25vh 0px 1px $star-color,
-      -31vw -19vh 0px 1px $star-color,
-      4vw 37vh 1px 1px $star-color,
-      -43vw 28vh 0px 0px $star-color,
-      3vw -25vh 0px 1px $star-color,
-      -39vw 14vh 0px 1px $star-color,
-      -40vw 31vh 0px 1px $star-color,
-      35vw -36vh 1px 1px $star-color,
-      16vw 49vh 0px 0px $star-color,
-      6vw 39vh 0px 0px $star-color,
-      3vw -35vh 0px 1px $star-color,
-      -44vw -2vh 1px 0px $star-color,
-      -6vw 21vh 1px 0px $star-color,
-      48vw 9vh 1px 1px $star-color,
-      -43vw 30vh 1px 1px $star-color,
-      29vw -12vh 1px 1px $star-color,
-      -48vw 13vh 1px 0px $star-color,
-      -42vw 32vh 1px 1px $star-color,
-      34vw 15vh 1px 1px $star-color,
-      29vw -37vh 1px 1px $star-color,
-      28vw 2vh 0px 0px $star-color;
-    */
-    
-    // Animation
+
     animation: zoom $animation-duration alternate infinite;
   }
 }
