@@ -1,10 +1,14 @@
 <template>
   <div class="zero-level__background">
     <div class="zero-level__main"/>
+
+    <Message />
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import Message from '@/components/Message.vue'
+</script>
 
 <style scoped lang="scss">
 // Starfield Animation Component Styles
