@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Level0 from '../levels/Level0.vue'
 import FirstLevel from '../levels/FirstLevel.vue'
 import SeconLevel from '../levels/SeconLevel.vue'
 import ThirdLevel from '../levels/ThirdLevel.vue'
@@ -7,15 +8,20 @@ import FifthLevel from '../levels/FifthLevel.vue'
 import SixthLevel from '../levels/SixthLevel.vue'
 import SeventhLevel from '../levels/SeventhLevel.vue'
 import EighthLevel from '../levels/EighthLevel.vue'
-import App from '../App.vue'
+import NotFound from '../components/NotFound.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'Home',
-      component: App
+      name: 'Level0',
+      component: Level0
+    },
+    {
+      path: '/level0',
+      name: 'Level0',
+      component: Level0
     },
     {
       path: '/level1',
@@ -56,6 +62,11 @@ const router = createRouter({
       path: '/level8',
       name: 'EighthLevel',
       component: EighthLevel
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: NotFound
     }
   ],
 })

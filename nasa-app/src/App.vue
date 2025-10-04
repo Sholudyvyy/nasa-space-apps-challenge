@@ -1,5 +1,7 @@
 <template>
-  <h1>You did it!</h1>
+  <div id="app">
+    <router-view></router-view>
+  </div>
 </template>
 
 <script setup></script>
