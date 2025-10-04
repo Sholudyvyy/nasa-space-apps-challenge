@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Level0 from '../levels/Level0.vue'
+import Level0 from '../levels/ZeroLevel.vue'
 import FirstLevel from '../levels/FirstLevel.vue'
 import SeconLevel from '../levels/SeconLevel.vue'
 import ThirdLevel from '../levels/ThirdLevel.vue'

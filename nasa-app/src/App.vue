@@ -6,4 +6,8 @@
 
 <script setup></script>
 
-<style scoped></style>
+<style lang="scss">
+body {
+  all: unset
+}
+</style>
