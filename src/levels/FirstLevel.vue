@@ -9,7 +9,7 @@
     <template #chat>
       <div class="chat-content">
         <div class="chat-list" ref="chatListRef">
-          <template v-for="msg in shownMessages" :key="msg.id">
+          <template v-for="(msg, index) in shownMessages" :key="msg.id">
             <div v-if="msg.type === 'message'" class="message-wrapper">
               <Message
                 :text="msg.text"
@@ -17,11 +17,11 @@
                 :enableTyping="true"
                 @typingComplete="scrollToBottom"
               />
-              <div class="enter-hint" v-if="!hasActiveQuiz">Press Enter ⏎</div>
+              <div class="enter-hint" v-if="!hasActiveQuiz && index === shownMessages.length - 1">Press Enter ⏎</div>
             </div>
             <div v-else-if="msg.type === 'img'" class="message-image-container">
               <img :src="msg.src" :alt="msg.alt || 'Image'" class="message-image" />
-              <div class="enter-hint" v-if="!hasActiveQuiz">Press Enter ⏎</div>
+              <div class="enter-hint" v-if="!hasActiveQuiz && index === shownMessages.length - 1">Press Enter ⏎</div>
             </div>
             <Quiz
               v-else-if="msg.type === 'quiz'"
