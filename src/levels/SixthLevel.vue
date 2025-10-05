@@ -8,11 +8,11 @@
       />
       <div class="image-link-container">
         <a
-          href="https://smap.jpl.nasa.gov/"
+          href="https://www.earthdata.nasa.gov/data/instruments/srtm"
           target="_blank"
           class="image-link"
         >
-          SMAP website
+          SRTM website
         </a>
       </div>
     </div>
@@ -65,23 +65,78 @@ document.title = "Asteroid Thresher - Level 6";
 const LEVEL_ID = 6;
 
 const messageTexts = [
-  { type: 'message', text: 'Level 6: Expert Mode! 🎯' },
-  { type: 'message', text: 'You\'re doing amazing!' },
-  { 
+  { type: 'message', text: 'Water Flow Modeling and Erosion Risk'},
+  {
     type: 'quiz',
-    question: 'What season do you see?',
+    question: 'Water Flow Modeling and Erosion Risk\nQuestion: How does SRTM Elevation Data primarily assist in the modeling of water flow and the identification of erosion risks on a farm field?',
     variants: [
-      { type: 'text', content: 'Spring' },
-      { type: 'text', content: 'Summer' },
-      { type: 'text', content: 'Fall' },
-      { type: 'text', content: 'Winter' }
+      { type: 'text', content: 'By directly measuring soil moisture content across the field.' },
+      { type: 'text', content: 'By detecting the composition and mineral content of the topsoil.' },
+      { type: 'text', content: 'By calculating slope, aspect, and flow accumulation to determine water path concentration.' },
+      { type: 'text', content: 'By estimating the overall nutrient levels available to crops.' }
     ],
-    correctIndex: 1,
-    points: 40,
-    correctMessage: 'Outstanding! Summer again! 🌞',
-    wrongMessage: 'Not quite, but keep trying!'
+    correctIndex: 2,
+    points: 5,
+    correctMessage: 'Correct! ✅',
+    wrongMessage: 'Try again.'
   },
-  { type: 'message', text: 'You\'re a pro at this!' }
+  {
+    type: 'quiz',
+    question: 'Tillage Depth and Topography\nQuestion: Which specific topographic characteristic, typically derived from SRTM data, is the most direct indicator that a field area requires zero tillage (no-till) farming methods to prevent soil loss?',
+    variants: [
+      { type: 'text', content: 'A low elevation and flat terrain.' },
+      { type: 'text', content: 'A high curvature or convex shape.' },
+      { type: 'text', content: 'A soil type with high clay content.' },
+      { type: 'text', content: 'A high degree of steepness (slope) and long flow paths.' }
+    ],
+    correctIndex: 3,
+    points: 10,
+    correctMessage: 'Exactly! ✅',
+    wrongMessage: 'Not quite, try again.'
+  },
+  {
+    type: 'quiz',
+    question: 'SRTM Mission and Data Type\nQuestion: The SRTM (Shuttle Radar Topography Mission) dataset, mentioned in the text, is a crucial source for this type of analysis. What fundamental type of data did the SRTM mission capture?',
+    variants: [
+      { type: 'text', content: 'High-resolution spectral bands (Visible and Near-Infrared).' },
+      { type: 'text', content: 'Data on soil temperature and thermal emissivity.' },
+      { type: 'text', content: 'Digital Elevation Models (DEMs) using interferometric radar.' },
+      { type: 'text', content: 'Detailed images of surface tillage marks and crop cover.' }
+    ],
+    correctIndex: 2,
+    points: 25,
+    correctMessage: 'Right on! ✅',
+    wrongMessage: 'Give it another shot.'
+  },
+  {
+    type: 'quiz',
+    question: 'Precision Agriculture and Tillage Decisions\nQuestion: In precision agriculture, how do farmers primarily use the elevation and derived hydrological data (like the Topographic Wetness Index) from SRTM to make variable-rate tillage decisions?',
+    variants: [
+      { type: 'text', content: 'To determine the optimal time of day to perform fieldwork.' },
+      { type: 'text', content: 'To calculate the exact amount of fertilizer needed for each zone.' },
+      { type: 'text', content: 'To map the spread of pests and diseases across elevation gradients.' },
+      { type: 'text', content: 'To define management zones that require varying degrees of deep plowing, reduced tillage, or zero tillage.' }
+    ],
+    correctIndex: 3,
+    points: 10,
+    correctMessage: 'Great! ✅',
+    wrongMessage: 'Close! Try again.'
+  },
+  {
+    type: 'quiz',
+    question: 'Deep Plowing Requirement\nQuestion: In which scenario would SRTM data most likely suggest that deeper plowing (tillage) might be beneficial rather than recommending reduced or zero tillage for erosion control?',
+    variants: [
+      { type: 'text', content: 'In areas with the steepest slopes and highest flow accumulation.' },
+      { type: 'text', content: 'In areas identified as having a high risk of wind erosion.' },
+      { type: 'text', content: 'In low-slope, poorly drained areas where a deep soil treatment is needed to break up compaction and improve water infiltration.' },
+      { type: 'text', content: 'In all areas across the field to ensure uniform seedbed preparation.' }
+    ],
+    correctIndex: 2,
+    points: 15,
+    correctMessage: 'Exactly! ✅',
+    wrongMessage: 'Think about drainage and compaction.'
+  },
+  { type: 'message', text: 'You\'ve completed Level 6. Well done! 🎉' }
 ];
 
 let messageIdCounter = 0;
