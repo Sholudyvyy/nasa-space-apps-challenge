@@ -394,6 +394,9 @@ watch(shownMessages, async () => {
   left: 50%;
   transform: translateX(-50%);
   z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .image-link {
