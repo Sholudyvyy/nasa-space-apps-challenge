@@ -7,8 +7,8 @@
         class="level-image"
       />
       <div class="image-link-container">
-        <a href="https://smap.jpl.nasa.gov/" target="_blank" class="image-link">
-          SMAP website
+        <a href="https://www.earthdata.nasa.gov/learn/earth-observation-data-basics/sar" target="_blank" class="image-link">
+          SAR website
         </a>
       </div>
     </div>
@@ -65,23 +65,65 @@ document.title = "Cryo Storage - Level 7";
 const LEVEL_ID = 7;
 
 const messageTexts = [
-  { type: "message", text: "Level 7: Almost there! 🌟" },
+  { type: "message", text: "In winter, conventional optical satellites (such as Landsat) are often blocked by clouds or snow." },
   { type: "message", text: "One more challenge!" },
   {
     type: "quiz",
-    question: "Identify the season in the image:",
+    question: "What technology used on satellites (such as Sentinel-1 or the upcoming NISAR) allows them to **“see” through clouds, smoke, and at night**, and is particularly useful for monitoring winter crops in winter?",
     variants: [
-      { type: "text", content: "Spring" },
-      { type: "text", content: "Summer" },
-      { type: "text", content: "Fall" },
-      { type: "text", content: "Winter" },
+      { type: "text", content: "Hyperspectral imaging" },
+      { type: "text", content: "Synthetic aperture radar (SAR)" },
+      { type: "text", content: "Thermal infrared imaging" },
+      { type: "text", content: "High-speed GPS receivers" },
+    ],
+    correctIndex: 1,
+    points: 10,
+    correctMessage: "You are right!",
+    wrongMessage: "You almost succeeded!",
+  },
+  {
+    type: "quiz",
+    question: "Go to the interactive platform NASA EOSDIS Worldview. Find and activate the data layer that shows the level of snow cover, and set the date to a winter month. Which satellite is most often used to create this layer due to its ability to see large areas every day?",
+    variants: [
+      { type: "text", content: "SMAP" },
+      { type: "text", content: "MODIS" },
+      { type: "text", content: "SRTM" },
+      { type: "text", content: "Landsat" },
+    ],
+    correctIndex: 1,
+    points: 15,
+    correctMessage: "Yes, yes, well done!",
+    wrongMessage: "Almost, almost, you are close!",
+  },
+  {
+    type: "quiz",
+    question: "How can satellites that measure Earth's mass and gravity (e.g., GRACE missions) help agronomists estimate snow water equivalent (SWE) in large agricultural basins?",
+    variants: [
+      { type: "text", content: "They measure the color of water in the soil." },
+      { type: "text", content: "They provide direct photographs of snow." },
+      { type: "text", content: "They measure changes in the gravitational field caused by large masses of water/snow." },
+      { type: "text", content: "They measure the air temperature above the snow." },
     ],
     correctIndex: 2,
-    points: 45,
-    correctMessage: "Perfect! Fall colors! 🍂",
-    wrongMessage: "Close! Look at those autumn leaves!",
+    points: 15,
+    correctMessage: "Well done, that's right!",
+    wrongMessage: "Very close! Well done!",
   },
-  { type: "message", text: "One more level to go!" },
+  {
+    type: "quiz",
+    question: " Radar data (SAR) is sensitive to the dielectric properties of the surface. What happens to the SAR signal when the soil around the roots of winter crops freezes, compared to when it is thawed?",
+    variants: [
+      { type: "text", content: "The SAR signal remains unchanged; it is not sensitive to temperature." },
+      { type: "text", content: "The SAR signal becomes weaker because frozen water is a better absorber." },
+      { type: "text", content: "The SAR signal usually becomes stronger (brighter) because ice is a better scatterer, which helps to monitor these phases." },
+      { type: "text", content: "The SAR image simply disappears." },
+    ],
+    correctIndex: 2,
+    points: 20,
+    correctMessage: "Keep it up!",
+    wrongMessage: "Almost, just a little more",
+  },
+  { type: "message", text: "Fantastic! You're nearing the finish line!" },
 ];
 
 let messageIdCounter = 0;
