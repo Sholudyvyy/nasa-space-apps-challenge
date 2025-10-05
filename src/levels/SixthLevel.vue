@@ -76,7 +76,7 @@ const messageTexts = [
       { type: 'text', content: 'By estimating the overall nutrient levels available to crops.' }
     ],
     correctIndex: 2,
-    points: 5,
+    points: 10,
     correctMessage: 'Correct! ✅',
     wrongMessage: 'Try again.'
   },
@@ -90,7 +90,7 @@ const messageTexts = [
       { type: 'text', content: 'A high degree of steepness (slope) and long flow paths.' }
     ],
     correctIndex: 3,
-    points: 10,
+    points: 15,
     correctMessage: 'Exactly! ✅',
     wrongMessage: 'Not quite, try again.'
   },
@@ -104,7 +104,7 @@ const messageTexts = [
       { type: 'text', content: 'Detailed images of surface tillage marks and crop cover.' }
     ],
     correctIndex: 2,
-    points: 25,
+    points: 20,
     correctMessage: 'Right on! ✅',
     wrongMessage: 'Give it another shot.'
   },
@@ -118,7 +118,7 @@ const messageTexts = [
       { type: 'text', content: 'To define management zones that require varying degrees of deep plowing, reduced tillage, or zero tillage.' }
     ],
     correctIndex: 3,
-    points: 10,
+    points: 20,
     correctMessage: 'Great! ✅',
     wrongMessage: 'Close! Try again.'
   },
@@ -132,7 +132,7 @@ const messageTexts = [
       { type: 'text', content: 'In all areas across the field to ensure uniform seedbed preparation.' }
     ],
     correctIndex: 2,
-    points: 15,
+    points: 25,
     correctMessage: 'Exactly! ✅',
     wrongMessage: 'Think about drainage and compaction.'
   },
