@@ -68,7 +68,7 @@ const messageTexts = [
   { type: 'message', text: 'Spectral Analysis of Vegetation and Remote Sensing' },
   {
     type: 'quiz',
-    question: '1) Which spectral range on satellite images is the most sensitive to a decrease in chlorophyll concentration in plants (indicator of disease or stress)?',
+    question: 'Which spectral range on satellite images is the most sensitive to a decrease in chlorophyll concentration in plants (indicator of disease or stress)?',
     variants: [
       { type: 'text', content: 'Near-Infrared (NIR) range' },
       { type: 'text', content: 'Thermal Infrared (TIR) range' },
@@ -82,7 +82,7 @@ const messageTexts = [
   },
   {
     type: 'quiz',
-    question: '2) Healthy leaves have high reflectance in NIR. Which part of the plant is primarily responsible for this high reflectance?',
+    question: 'Healthy leaves have high reflectance in NIR. Which part of the plant is primarily responsible for this high reflectance?',
     variants: [
       { type: 'text', content: 'Epidermis and waxy cuticle' },
       { type: 'text', content: 'Stem and root system' },
@@ -96,7 +96,7 @@ const messageTexts = [
   },
   {
     type: 'quiz',
-    question: '3) Which two satellite missions are primary sources for high-detail spectral analysis of vegetation via NASA Earthdata?',
+    question: 'Which two satellite missions are primary sources for high-detail spectral analysis of vegetation via NASA Earthdata?',
     variants: [
       { type: 'text', content: 'Landsat and Sentinel-2' },
       { type: 'text', content: 'NOAA and GOES' },
@@ -110,7 +110,7 @@ const messageTexts = [
   },
   {
     type: 'quiz',
-    question: '4) Which visible spectral range has the greatest absorption by healthy plants due to chlorophyll?',
+    question: 'Which visible spectral range has the greatest absorption by healthy plants due to chlorophyll?',
     variants: [
       { type: 'text', content: 'Ultraviolet (UV)' },
       { type: 'text', content: 'Visible Blue' },
