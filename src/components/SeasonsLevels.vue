@@ -21,6 +21,7 @@
                 <h3 class="title">{{ challenge.title }}</h3>
               </div>
               <p class="desc">{{ challenge.description }}</p>
+              <div class="score">Score: <strong>{{ getBestScore(challenge.level) }}</strong></div>
               <div class="actions">
                 <button
                   v-if="season.unlocked"
@@ -38,7 +39,7 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import LevelSelector from './LevelSelector.vue'
 
@@ -97,7 +98,14 @@ function getCompletedSet() {
   }
 }
 
-const completedSet = computed(() => getCompletedSet())
+const storageVersion = ref(0)
+function bumpStorageVersion() { storageVersion.value++ }
+
+const completedSet = computed(() => {
+  // depend on version so this recomputes when localStorage may have changed
+  void storageVersion.value
+  return getCompletedSet()
+})
 
 const seasons = computed(() => {
   const set = completedSet.value
@@ -124,6 +132,34 @@ function startLevel(route) {
   } catch (_) {}
   router.push(route)
 }
+
+function getBestScore(levelNum) {
+  // If рівень ще не пройдено, показуємо 0 незалежно від наявних локальних значень
+  if (!completedSet.value.has(levelNum)) return 0
+  try {
+    const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}')
+    const key = `level${levelNum}`
+    return levelsProgress[key]?.currentPoint || 0
+  } catch (_) {
+    return 0
+  }
+}
+
+onMounted(() => {
+  const onStorage = (e) => {
+    if (e.key === 'levelsCompleted' || e.key === 'levelsProgress') bumpStorageVersion()
+  }
+  window.addEventListener('storage', onStorage)
+  const onVis = () => { if (!document.hidden) bumpStorageVersion() }
+  document.addEventListener('visibilitychange', onVis)
+  // initial sync
+  bumpStorageVersion()
+  // teardown
+  onBeforeUnmount(() => {
+    window.removeEventListener('storage', onStorage)
+    document.removeEventListener('visibilitychange', onVis)
+  })
+})
 </script>
 
 <style scoped>
@@ -201,6 +237,7 @@ h1 { color: #e0ecff; font-weight: 800; letter-spacing: 0.5px; }
 .badge { background: #0e1220; color: #a7c4ff; border: 1px solid #2a3b6f; border-radius: 9999px; padding: 2px 8px; font-weight: 700; }
 .title { color: #e6ebff; font-weight: 800; }
 .desc { color: #9db0d8; font-size: 14px; }
+.score { color: #a7c4ff; font-size: 14px; }
 
 .actions { margin-top: 4px; }
 .play {

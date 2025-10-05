@@ -21,7 +21,7 @@
     <template #chat>
       <div class="chat-content">
         <div class="chat-list" ref="chatListRef">
-          <template v-for="msg in shownMessages" :key="msg.id">
+          <template v-for="(msg, index) in shownMessages" :key="msg.id">
             <div v-if="msg.type === 'message'" class="message-wrapper">
               <Message
                 :text="msg.text"
@@ -29,7 +29,12 @@
                 :enableTyping="true"
                 @typingComplete="scrollToBottom"
               />
-              <div class="enter-hint" v-if="!hasActiveQuiz">Press Enter ⏎</div>
+              <div
+                class="enter-hint"
+                v-if="!hasActiveQuiz && index === shownMessages.length - 1"
+              >
+                Press Enter ⏎
+              </div>
             </div>
             <div v-else-if="msg.type === 'img'" class="message-image-container">
               <img
@@ -37,7 +42,12 @@
                 :alt="msg.alt || 'Image'"
                 class="message-image"
               />
-              <div class="enter-hint" v-if="!hasActiveQuiz">Press Enter ⏎</div>
+              <div
+                class="enter-hint"
+                v-if="!hasActiveQuiz && index === shownMessages.length - 1"
+              >
+                Press Enter ⏎
+              </div>
             </div>
             <Quiz
               v-else-if="msg.type === 'quiz'"
@@ -79,7 +89,10 @@ const messageTexts = [
   { type: "message", text: "Hello! This is the first message." },
   { type: "message", text: "Press Enter to see the next message." },
   { type: "message", text: "Messages appear at the top of the stack." },
-  { type: "message", text: "P.S: You may also find the links to sources from NASA helpful🤫" },
+  {
+    type: "message",
+    text: "P.S: You may also find the links to sources from NASA helpful🤫",
+  },
   {
     type: "quiz",
     question:
