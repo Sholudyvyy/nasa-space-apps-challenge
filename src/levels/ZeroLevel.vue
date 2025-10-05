@@ -2,7 +2,7 @@
   <div class="zero-level">
     <!-- Slideshow Section -->
     <div v-if="showSlideshow" class="slideshow" @click="nextSlide">
-      <transition name="fade">
+      <transition name="fade" mode="out-in">
         <img
           :key="currentSlide"
           :src="historyImages[currentSlide]"
@@ -63,6 +63,7 @@ import moskot from '@/assets/images/moskot/moskot.png'
 import moskot1 from '@/assets/images/moskot/moskot1.png'
 import moskot2 from '@/assets/images/moskot/moskot2.png'
 import moskot4 from '@/assets/images/moskot/moskot4.png'
+import moskot3 from '@/assets/images/moskot/moskot3.png'
 
 // Import history images for slideshow
 import history0 from '@/assets/images/history/history-0.png'
@@ -81,10 +82,11 @@ const historyImages = [
 ]
 
 const messages = ref([
-  { text: 'Hello, I am Sem.', moskotSrc: moskot4 },
-  { text: 'I am an astronaut who knows how to use cosmos information to benefit farming.', moskotSrc: moskot2 },
-  { text: 'In this game, I will show you real-life examples of how to use NASA data to develop your farm.', moskotSrc: moskot1 },
-  { text: '4 seasons, many challenges, and valuable experience. I am here to help you. Let`s start?', moskotSrc: moskot },
+  { text: 'Hello, I am Sem. ', moskotSrc: moskot4 },
+  { text: 'Former astronaut, now a farmer', moskotSrc: moskot2 },
+  { text: 'I\'ll show you a year on my farm, 4 seasons, and a bunch of challenges.', moskotSrc: moskot3 },
+  { text: 'I will use NASA resources and data to restore this farm to its former glory.', moskotSrc: moskot1 },
+  { text: 'I will teach you too, my friend. Spring is coming soon, so let\'s get ready. Are you ready?', moskotSrc: moskot },
 ])
 
 const router = useRouter()
@@ -378,18 +380,16 @@ onBeforeUnmount(() => {
 /* Fade Transition */
 .fade-enter-active,
 .fade-leave-active {
-  transition: opacity 0.6s ease-in-out;
+  transition: opacity 1.2s ease-in-out;
 }
 
-.fade-enter-from {
-  opacity: 0;
-}
-
+.fade-enter-from,
 .fade-leave-to {
   opacity: 0;
 }
 
-.fade-enter-to {
+.fade-enter-to,
+.fade-leave-from {
   opacity: 1;
 }
 </style>
