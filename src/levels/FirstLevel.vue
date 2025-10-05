@@ -1,10 +1,22 @@
 <template>
   <LevelLayout :levelId="1">
-    <img
-      src="@/assets/images/s/Spring.jpg"
-      alt="first-level"
-      class="first-level__image"
-    />
+    <div class="image-container">
+      <img
+        src="@/assets/images/s/Spring.jpg"
+        alt="first-level"
+        class="first-level__image"
+      />
+      <div class="image-link-container">
+        <a
+          href="https://smap.jpl.nasa.gov/"
+          target="_blank"
+          class="image-link"
+          ref="imageLinkRef"
+        >
+          SMAP website
+        </a>
+      </div>
+    </div>
 
     <template #chat>
       <div class="chat-content">
@@ -17,11 +29,25 @@
                 :enableTyping="true"
                 @typingComplete="scrollToBottom"
               />
-              <div class="enter-hint" v-if="!hasActiveQuiz && index === shownMessages.length - 1">Press Enter ⏎</div>
+              <div
+                class="enter-hint"
+                v-if="!hasActiveQuiz && index === shownMessages.length - 1"
+              >
+                Press Enter ⏎
+              </div>
             </div>
             <div v-else-if="msg.type === 'img'" class="message-image-container">
-              <img :src="msg.src" :alt="msg.alt || 'Image'" class="message-image" />
-              <div class="enter-hint" v-if="!hasActiveQuiz && index === shownMessages.length - 1">Press Enter ⏎</div>
+              <img
+                :src="msg.src"
+                :alt="msg.alt || 'Image'"
+                class="message-image"
+              />
+              <div
+                class="enter-hint"
+                v-if="!hasActiveQuiz && index === shownMessages.length - 1"
+              >
+                Press Enter ⏎
+              </div>
             </div>
             <Quiz
               v-else-if="msg.type === 'quiz'"
@@ -40,16 +66,19 @@
 </template>
 
 <script setup>
-import LevelLayout from '@/layouts/LevelLayout.vue';
-import Message from '@/components/Message.vue';
-import Quiz from '@/components/Quiz.vue';
-import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
-import { useRouter } from 'vue-router';
+import LevelLayout from "@/layouts/LevelLayout.vue";
+import Message from "@/components/Message.vue";
+import Quiz from "@/components/Quiz.vue";
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from "vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
 // Level ID for this level
 const LEVEL_ID = 1;
+
+// Ref for the image link
+const imageLinkRef = ref(null);
 
 // Message data (edit as needed)
 // Supported types:
@@ -57,39 +86,78 @@ const LEVEL_ID = 1;
 // - 'img': { type: 'img', src: '/path/to/image', alt: 'description' }
 // - 'quiz': { type: 'quiz', question: 'question text', variants: [{type: 'text'|'img', content: '...'}], correctIndex: 0, correctMessage: 'text', wrongMessage: 'text' }
 const messageTexts = [
-  { type: 'message', text: 'Привет! Это первое сообщение.' },
-  { type: 'message', text: 'Нажми Enter, чтобы увидеть следующее сообщение.' },
-  { type: 'message', text: 'Сообщения появляются сверху стека.' },
-  { type: 'img', src: '/src/assets/images/moskot/moskot.png', alt: 'Maskot' },
-  { 
-    type: 'quiz',
-    question: 'Какое время года изображено на картинке?',
+  { type: "message", text: "Hello! This is the first message." },
+  { type: "message", text: "Press Enter to see the next message." },
+  { type: "message", text: "Messages appear at the top of the stack." },
+  {
+    type: "message",
+    text: "P.S: You may also find the links to sources from NASA helpful🤫",
+  },
+  {
+    type: "quiz",
+    question:
+      "What abbreviation refers to the NASA satellite dedicated to monitoring soil moisture and freeze/thaw dynamics?",
     variants: [
-      { type: 'text', content: 'Весна' },
-      { type: 'text', content: 'Лето' },
-      { type: 'text', content: 'Осень' },
-      { type: 'text', content: 'Зима' }
+      { type: "text", content: "MODIS" },
+      { type: "text", content: "SMAP" },
+      { type: "text", content: "Landsat" },
+      { type: "text", content: "VIIRS" },
     ],
-    correctIndex: 0,
+    correctIndex: 1,
+    points: 10,
+    correctMessage: "That`s right! Its SMAP!🚀",
+    wrongMessage: "Almost right! Try again.",
+  },
+  {
+    type: "message",
+    text: "The Message component prints text with an effect.",
+  },
+  {
+    type: "quiz",
+    question:
+      "According to the description of the SMAP core product, what two key soil characteristics does this satellite measure?",
+    variants: [
+      { type: "text", content: "Relief height and soil temperature" },
+      { type: "text", content: "Chemical composition and pH" },
+      { type: "text", content: "Soil moisture and physical temperature" },
+      { type: "text", content: "Amount of nitrates and organic matter" },
+    ],
+    correctIndex: 2,
     points: 15,
-    correctMessage: 'Правильно! Это весна! 🌸',
-    wrongMessage: 'Неправильно! На картинке изображена весна. Попробуй еще раз!'
+    correctMessage: "You are right!",
+    wrongMessage: "Almost, almost, you are close!",
   },
-  { type: 'message', text: 'Компонент Message печатает текст с эффектом.' },
-  { 
-    type: 'quiz',
-    question: 'Выберите правильное изображение маскота:',
+  {
+    type: "quiz",
+    question:
+      "On the Worldview platform, in which category are you most likely to find data related to soil moisture or other indicators important to agriculture?",
     variants: [
-      { type: 'img', content: '/src/assets/images/moskot/moskot.png', alt: 'Maskot' },
-      { type: 'img', content: '/src/assets/images/moskot/moskot1.png', alt: 'Maskot 1' }
+      { type: "text", content: "Atmosphere" },
+      { type: "text", content: "Land Surface" },
+      { type: "text", content: "Glaciers" },
+      { type: "text", content: "Oceans" },
     ],
-    correctIndex: 0,
-    points: 20,
-    correctMessage: 'Отлично! Это правильный маскот! ✨',
-    wrongMessage: 'Ой, не совсем! Попробуй другой вариант.'
+    correctIndex: 1,
+    points: 15,
+    correctMessage: "You are right!",
+    wrongMessage: "You almost succeeded!",
   },
-  { type: 'message', text: 'Компонент Message печатает текст с эффектом.' },
-  { type: 'message', text: 'Удачи на уровне!' }
+  {
+    type: "quiz",
+    question:
+      "Satellites such as SMAP operate on the basis of microwave radiation. Read a brief summary of the SMAP mission.",
+    variants: [
+      { type: "text", content: "Low air temperatures" },
+      { type: "text", content: "Heavy rain or thick snow cover" },
+      { type: "text", content: "High air humidity" },
+      { type: "text", content: "Strong winds" },
+    ],
+    correctIndex: 1,
+    points: 20,
+    correctMessage: "Yes, yes, well done!",
+    wrongMessage: "Almost, almost, you are close!",
+  },
+  { type: "message", text: "You passed the first level, congratulations!" },
 ];
 
 let messageIdCounter = 0;
@@ -112,46 +180,52 @@ function scrollToBottom() {
 }
 
 function handleCorrectAnswer(quizId, correctMessage, points) {
-  console.log('✅ Correct answer!');
+  console.log("✅ Correct answer!");
   hasActiveQuiz.value = false; // Allow Enter key again
-  
+
   // Add points to session score for this level
   try {
     const currentKey = `currentPoints_level${LEVEL_ID}`;
-    
-    const currentPoints = parseInt(sessionStorage.getItem(currentKey) || '0');
+
+    const currentPoints = parseInt(sessionStorage.getItem(currentKey) || "0");
     const newPoints = currentPoints + points;
     sessionStorage.setItem(currentKey, newPoints.toString());
-    console.log(`🎯 Level ${LEVEL_ID}: Added ${points} points! Current: ${newPoints}`);
-    
+    console.log(
+      `🎯 Level ${LEVEL_ID}: Added ${points} points! Current: ${newPoints}`
+    );
+
     // Check if current score beats best score for this level in levelsProgress
-    const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}');
+    const levelsProgress = JSON.parse(
+      localStorage.getItem("levelsProgress") || "{}"
+    );
     const levelKey = `level${LEVEL_ID}`;
-    
+
     if (!levelsProgress[levelKey]) {
       levelsProgress[levelKey] = { maxPoint: 100, currentPoint: null };
     }
-    
+
     const bestScore = levelsProgress[levelKey].currentPoint || 0;
     if (newPoints > bestScore) {
       levelsProgress[levelKey].currentPoint = newPoints;
-      localStorage.setItem('levelsProgress', JSON.stringify(levelsProgress));
+      localStorage.setItem("levelsProgress", JSON.stringify(levelsProgress));
       console.log(`🏆 Level ${LEVEL_ID}: New best score: ${newPoints}!`);
     }
-    
+
     // Dispatch custom event to notify points counter with level ID
-    window.dispatchEvent(new CustomEvent('points-updated', { 
-      detail: { levelId: LEVEL_ID } 
-    }));
+    window.dispatchEvent(
+      new CustomEvent("points-updated", {
+        detail: { levelId: LEVEL_ID },
+      })
+    );
   } catch (error) {
-    console.error('Error saving points:', error);
+    console.error("Error saving points:", error);
   }
-  
+
   replaceQuizWithMessage(quizId, correctMessage);
 }
 
 function handleWrongAnswer(quizId, wrongMessage) {
-  console.log('❌ Wrong answer!');
+  console.log("❌ Wrong answer!");
   hasActiveQuiz.value = false; // Allow Enter key again
   replaceQuizWithMessage(quizId, wrongMessage);
 }
@@ -160,49 +234,49 @@ function replaceQuizWithMessage(quizId, messageText) {
   // Wait for animation to complete before replacing quiz with message
   setTimeout(() => {
     // Find the quiz in shownMessages and replace it with a message
-    const index = shownMessages.value.findIndex(msg => msg.id === quizId);
+    const index = shownMessages.value.findIndex((msg) => msg.id === quizId);
     if (index !== -1) {
       shownMessages.value[index] = {
         id: quizId, // Keep the same ID to preserve the key
-        type: 'message',
-        text: messageText
+        type: "message",
+        text: messageText,
       };
     }
   }, 1500); // 1.5 second delay to show the correct/wrong animation
 }
 
 function handleKeydown(e) {
-  if (e.key === 'Enter') {
+  if (e.key === "Enter") {
     // Prevent Enter if there's an active quiz
     if (hasActiveQuiz.value) {
-      console.log('⚠️ Please answer the quiz before continuing');
+      console.log("⚠️ Please answer the quiz before continuing");
       return;
     }
-    
+
     if (currentIndex.value < messageTexts.length) {
       // Keep only last 3 before pushing so result is max 4
       if (shownMessages.value.length >= 4) {
         shownMessages.value.shift();
       }
-      
+
       // Add next message to the bottom of the list with unique ID
       const nextMessage = {
         id: messageIdCounter++,
-        ...messageTexts[currentIndex.value]
+        ...messageTexts[currentIndex.value],
       };
       shownMessages.value.push(nextMessage);
       currentIndex.value += 1;
-      
+
       // Check if the new message is a quiz
-      if (nextMessage.type === 'quiz') {
+      if (nextMessage.type === "quiz") {
         hasActiveQuiz.value = true;
       }
-      
+
       // Check if this was the last message
       if (currentIndex.value === messageTexts.length) {
         markLevelCompleted();
       }
-      
+
       // Ensure newest message is visible
       nextTick().then(scrollToBottom);
     }
@@ -212,35 +286,37 @@ function handleKeydown(e) {
 function markLevelCompleted() {
   try {
     // Get existing completed levels from localStorage
-    const levelsCompleted = JSON.parse(localStorage.getItem('levelsCompleted') || '[]');
-    
+    const levelsCompleted = JSON.parse(
+      localStorage.getItem("levelsCompleted") || "[]"
+    );
+
     // Add level 1 if not already completed
     if (!levelsCompleted.includes(1)) {
       levelsCompleted.push(1);
-      localStorage.setItem('levelsCompleted', JSON.stringify(levelsCompleted));
-      console.log('✅ Level 1 completed and saved!');
+      localStorage.setItem("levelsCompleted", JSON.stringify(levelsCompleted));
+      console.log("✅ Level 1 completed and saved!");
     }
-    
+
     // Set token to allow navigation to next level
-    sessionStorage.setItem('allowLevelNav', Date.now().toString());
-    
+    sessionStorage.setItem("allowLevelNav", Date.now().toString());
+
     // Navigate to next level (level 2) after a short delay
     setTimeout(() => {
-      router.push('/level2');
+      router.push("/level2");
     }, 1000);
   } catch (error) {
-    console.error('Error saving level completion:', error);
+    console.error("Error saving level completion:", error);
   }
 }
 
 onMounted(() => {
-  window.addEventListener('keydown', handleKeydown);
+  window.addEventListener("keydown", handleKeydown);
   // Start scrolled to bottom for initial message
   nextTick().then(scrollToBottom);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener("keydown", handleKeydown);
 });
 
 // Also scroll when messages array changes for any reason
@@ -291,25 +367,34 @@ watch(shownMessages, async () => {
 }
 
 .chat-list::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(74, 158, 255, 0.6), rgba(106, 179, 255, 0.8));
+  background: linear-gradient(
+    180deg,
+    rgba(74, 158, 255, 0.6),
+    rgba(106, 179, 255, 0.8)
+  );
   border-radius: 10px;
   border: 1px solid rgba(74, 158, 255, 0.3);
-  box-shadow: 
-    0 0 10px rgba(74, 158, 255, 0.4),
+  box-shadow: 0 0 10px rgba(74, 158, 255, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
 .chat-list::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(74, 158, 255, 0.8), rgba(106, 179, 255, 1));
-  box-shadow: 
-    0 0 15px rgba(74, 158, 255, 0.7),
-    0 0 25px rgba(74, 158, 255, 0.4),
+  background: linear-gradient(
+    180deg,
+    rgba(74, 158, 255, 0.8),
+    rgba(106, 179, 255, 1)
+  );
+  box-shadow: 0 0 15px rgba(74, 158, 255, 0.7), 0 0 25px rgba(74, 158, 255, 0.4),
     inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .chat-list::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(180deg, rgba(106, 179, 255, 1), rgba(74, 158, 255, 0.9));
+  background: linear-gradient(
+    180deg,
+    rgba(106, 179, 255, 1),
+    rgba(74, 158, 255, 0.9)
+  );
 }
 
 /* Firefox Scrollbar */
@@ -371,22 +456,78 @@ watch(shownMessages, async () => {
   font-weight: 600;
   letter-spacing: 0.5px;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
-  box-shadow: 
-    0 2px 8px rgba(0, 0, 0, 0.3),
-    0 0 10px rgba(74, 158, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3), 0 0 10px rgba(74, 158, 255, 0.2);
   animation: hint-pulse 2s ease-in-out infinite;
   pointer-events: none;
   z-index: 10;
 }
 
 @keyframes hint-pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.7;
     transform: scale(1);
   }
   50% {
     opacity: 1;
     transform: scale(1.03);
+  }
+}
+
+/* Image container with link */
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.first-level__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-link-container {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.image-link {
+  display: inline-block;
+  color: #ffd700;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 10px 20px;
+  background: rgba(10, 15, 30, 0.85);
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  &:hover {
+    color: #fff;
+    background: rgba(255, 215, 0, 0.2);
+    border-color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5),
+      0 0 30px rgba(255, 215, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 10px rgba(255, 215, 0, 0.4),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
 }
 </style>

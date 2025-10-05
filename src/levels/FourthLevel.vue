@@ -66,6 +66,63 @@ const messageTexts = [
     correctMessage: 'Perfect! It\'s Winter! ⛄',
     wrongMessage: 'Try again! Look for snow and cold!'
   },
+  { type: 'message', text: 'Great! Let\'s dive deeper into spectroscopy for crops.' },
+  {
+    type: 'quiz',
+    question: '1) Which spectral range on satellite images is the most sensitive to a decrease in chlorophyll concentration in plants (indicator of disease or stress)?',
+    variants: [
+      { type: 'text', content: 'Near-Infrared (NIR) range' },
+      { type: 'text', content: 'Thermal Infrared (TIR) range' },
+      { type: 'text', content: 'Mid-Infrared (MIR) range' },
+      { type: 'text', content: 'Visible Green range' }
+    ],
+    correctIndex: 0,
+    points: 25,
+    correctMessage: 'Correct! NIR is most sensitive to chlorophyll decrease.',
+    wrongMessage: 'Not quite. The correct answer is Near-Infrared (NIR).'
+  },
+  {
+    type: 'quiz',
+    question: '2) Healthy leaves have high reflectance in NIR. Which part of the plant is primarily responsible for this high reflectance?',
+    variants: [
+      { type: 'text', content: 'Epidermis and waxy cuticle' },
+      { type: 'text', content: 'Stem and root system' },
+      { type: 'text', content: 'Chloroplasts in the cells' },
+      { type: 'text', content: 'Internal leaf cell structure (mesophyll)' }
+    ],
+    correctIndex: 3,
+    points: 25,
+    correctMessage: 'Correct! The internal leaf mesophyll drives high NIR reflectance.',
+    wrongMessage: 'Not quite. It is mainly the mesophyll (internal cell structure).'
+  },
+  {
+    type: 'quiz',
+    question: '3) Which two satellite missions are primary sources for high-detail spectral analysis of vegetation via NASA Earthdata?',
+    variants: [
+      { type: 'text', content: 'Landsat and Sentinel-2' },
+      { type: 'text', content: 'NOAA and GOES' },
+      { type: 'text', content: 'MODIS and ASTER' },
+      { type: 'text', content: 'GeoEye and WorldView' }
+    ],
+    correctIndex: 0,
+    points: 25,
+    correctMessage: 'Correct! Landsat and Sentinel-2 are widely used for vegetation spectra.',
+    wrongMessage: 'Not quite. The correct pair is Landsat and Sentinel-2.'
+  },
+  {
+    type: 'quiz',
+    question: '4) Which visible spectral range has the greatest absorption by healthy plants due to chlorophyll?',
+    variants: [
+      { type: 'text', content: 'Ultraviolet (UV)' },
+      { type: 'text', content: 'Visible Blue' },
+      { type: 'text', content: 'Visible Red' },
+      { type: 'text', content: 'Visible Green' }
+    ],
+    correctIndex: 2,
+    points: 25,
+    correctMessage: 'Correct! Chlorophyll strongly absorbs in the red range.',
+    wrongMessage: 'Not quite. Healthy plants absorb most strongly in the visible red.'
+  },
   { type: 'message', text: 'You\'re getting good at this!' }
 ];
 
