@@ -1,5 +1,6 @@
 <template>
   <div class="level">
+    <button class="menu-btn" @click="goMenu">Menu</button>
     <!-- Points Counter -->
     <div class="points-counter">
       <div class="points-content">
@@ -184,6 +185,10 @@ function goPrev() {
 function goNext() {
   const n = currentLevel.value;
   if (Number.isFinite(n) && n + 1 <= highestEnd.value) navigateToLevel(n + 1);
+}
+
+function goMenu() {
+  router.push('/')
 }
 </script>
 
@@ -400,6 +405,19 @@ function goNext() {
 .nav-status {
   color: #cfe0ff;
   font-weight: 700;
+}
+
+.menu-btn {
+  position: absolute;
+  top: 5px;
+  left: 650px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(120, 180, 255, 0.35);
+  background: #1a2a55;
+  color: #e8f3ff;
+  cursor: pointer;
+  z-index: 10001;
 }
 
 .game-content {
