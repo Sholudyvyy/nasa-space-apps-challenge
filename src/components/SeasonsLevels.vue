@@ -39,44 +39,51 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import LevelSelector from './LevelSelector.vue'
 
-// Demo images: reuse favicon as placeholder; replace with real images if available
-const img = '/favicon.ico'
+// Level thumbnails
+import L1 from '@/assets/lvls/1lvl.png'
+import L2 from '@/assets/lvls/2lvl.png'
+import L3 from '@/assets/lvls/3lvl.png'
+import L4 from '@/assets/lvls/4lvl.png'
+import L5 from '@/assets/lvls/5lvl.png'
+import L6 from '@/assets/lvls/6lvl.png'
+import L7 from '@/assets/lvls/7lvl.png'
+import L8 from '@/assets/lvls/8lvl.png'
 
 const seasonsRaw = [
   {
     id: 1,
     title: 'Season 1 — Spring',
     challenges: [
-      { level: 1, title: 'Orbital Sowing', description: 'Plant seeds on a low-orbit farm ring.', image: img, route: '/level1', score: 100 },
-      { level: 2, title: 'Ion Harvest', description: 'Collect ionized dew as irrigation.', image: img, route: '/level2', score: 120 },
+      { level: 1, title: 'Orbital Sowing', description: 'Plant seeds on a low-orbit farm ring.', image: L1, route: '/level1' },
+      { level: 2, title: 'Ion Harvest', description: 'Collect ionized dew as irrigation.', image: L2, route: '/level2' },
     ]
   },
   {
     id: 2,
     title: 'Season 2 — Summer',
     challenges: [
-      { level: 3, title: 'Solar Reaping', description: 'Time your harvest with solar flares.', image: img, route: '/level3', score: 140 },
-      { level: 4, title: 'Comet Fertilizer', description: 'Guide comet dust to enrich fields.', image: img, route: '/level4', score: 160 },
+      { level: 3, title: 'Solar Reaping', description: 'Time your harvest with solar flares.', image: L3, route: '/level3' },
+      { level: 4, title: 'Comet Fertilizer', description: 'Guide comet dust to enrich fields.', image: L4, route: '/level4' },
     ]
   },
   {
     id: 3,
     title: 'Season 3 — Autumn',
     challenges: [
-      { level: 5, title: 'Nebula Sorting', description: 'Sort grains in microgravity.', image: img, route: '/level5', score: 180 },
-      { level: 6, title: 'Asteroid Thresher', description: 'Use asteroid belts to thresh crops.', image: img, route: '/level6', score: 200 },
+      { level: 5, title: 'Nebula Sorting', description: 'Sort grains in microgravity.', image: L5, route: '/level5' },
+      { level: 6, title: 'Asteroid Thresher', description: 'Use asteroid belts to thresh crops.', image: L6, route: '/level6' },
     ]
   },
   {
     id: 4,
     title: 'Season 4 — Winter',
     challenges: [
-      { level: 7, title: 'Cryo Storage', description: 'Store surplus in cryo bins.', image: img, route: '/level7', score: 220 },
-      { level: 8, title: 'Polar Lights Yield', description: 'Boost growth with aurora energy.', image: img, route: '/level8', score: 240 },
+      { level: 7, title: 'Cryo Storage', description: 'Store surplus in cryo bins.', image: L7, route: '/level7' },
+      { level: 8, title: 'Polar Lights Yield', description: 'Boost growth with aurora energy.', image: L8, route: '/level8' },
     ]
   }
 ]
@@ -91,7 +98,14 @@ function getCompletedSet() {
   }
 }
 
-const completedSet = computed(() => getCompletedSet())
+const storageVersion = ref(0)
+function bumpStorageVersion() { storageVersion.value++ }
+
+const completedSet = computed(() => {
+  // depend on version so this recomputes when localStorage may have changed
+  void storageVersion.value
+  return getCompletedSet()
+})
 
 const seasons = computed(() => {
   const set = completedSet.value
@@ -130,6 +144,22 @@ function getBestScore(levelNum) {
     return 0
   }
 }
+
+onMounted(() => {
+  const onStorage = (e) => {
+    if (e.key === 'levelsCompleted' || e.key === 'levelsProgress') bumpStorageVersion()
+  }
+  window.addEventListener('storage', onStorage)
+  const onVis = () => { if (!document.hidden) bumpStorageVersion() }
+  document.addEventListener('visibilitychange', onVis)
+  // initial sync
+  bumpStorageVersion()
+  // teardown
+  onBeforeUnmount(() => {
+    window.removeEventListener('storage', onStorage)
+    document.removeEventListener('visibilitychange', onVis)
+  })
+})
 </script>
 
 <style scoped>
@@ -183,7 +213,7 @@ h1 { color: #e0ecff; font-weight: 800; letter-spacing: 0.5px; }
 
 .challenge {
   display: grid;
-  grid-template-columns: 120px 1fr;
+  grid-template-columns: 85px 1fr;
   gap: 12px;
   background: rgba(16, 20, 36, 0.6);
   border: 1px solid rgba(80, 120, 220, 0.2);
@@ -195,7 +225,7 @@ h1 { color: #e0ecff; font-weight: 800; letter-spacing: 0.5px; }
 
 .thumb {
   width: 100%;
-  height: 80px;
+  height: 90px;
   background-size: cover;
   background-position: center;
   border-radius: 8px;
