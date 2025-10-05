@@ -111,9 +111,8 @@ const seasons = computed(() => {
   return withCounts.map((s, idx, arr) => {
     if (idx === 0) return { ...s, unlocked: true };
     const prev = arr[idx - 1];
-    const prevUnlocked = idx - 1 === 0 || prev.unlocked;
     const prevComplete = prev.completedCount === prev.levels.length;
-    return { ...s, unlocked: prevUnlocked && prevComplete };
+    return { ...s, unlocked: prevComplete };
   });
 });
 

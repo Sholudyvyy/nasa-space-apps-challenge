@@ -24,75 +24,162 @@
       <slot name="chat">
       </slot>
     </div>
+
+    <div class="bottom-nav">
+      <button class="nav-btn" :disabled="!canGoPrev" @click="goPrev">Prev</button>
+      <div class="nav-status">Level {{ currentLevelDisplay }}</div>
+      <button class="nav-btn" :disabled="!canGoNext" @click="goNext">Next</button>
+    </div>
   </div>
 </template>
 
 <script setup>
-import Message from '@/components/Message.vue';
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
+// Props
 const props = defineProps({
   levelId: {
     type: [String, Number],
     required: true
   }
-});
+})
 
-const currentPoints = ref(0);
-const bestScore = ref(0);
+// Points state
+const currentPoints = ref(0)
+const bestScore = ref(0)
 
-// Load points from storage for this specific level
+// Load points for this specific level
 const loadPoints = () => {
-  const currentKey = `currentPoints_level${props.levelId}`;
-  currentPoints.value = parseInt(sessionStorage.getItem(currentKey) || '0');
-  
-  // Load best score from levelsProgress
-  try {
-    const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}');
-    const levelKey = `level${props.levelId}`;
-    bestScore.value = levelsProgress[levelKey]?.currentPoint || 0;
-  } catch (error) {
-    console.error('Error loading levelsProgress:', error);
-    bestScore.value = 0;
-  }
-};
+  const currentKey = `currentPoints_level${props.levelId}`
+  currentPoints.value = parseInt(sessionStorage.getItem(currentKey) || '0')
 
-// Listen for storage changes (when points are updated)
+  try {
+    const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}')
+    const levelKey = `level${props.levelId}`
+    bestScore.value = levelsProgress[levelKey]?.currentPoint || 0
+  } catch (error) {
+    console.error('Error loading levelsProgress:', error)
+    bestScore.value = 0
+  }
+}
+
+// Listeners for points updates
 const handleStorageChange = (e) => {
   if (e.key === 'levelsProgress') {
-    loadPoints();
+    loadPoints()
   }
-};
+}
 
-// Custom event listener for same-window updates
 const handlePointsUpdate = (e) => {
-  // Only update if the event is for this level
   if (e.detail && e.detail.levelId === props.levelId) {
-    loadPoints();
+    loadPoints()
   }
-};
+}
 
+let intervalId
 onMounted(() => {
-  // Initialize current points to 0 for new session for this level
-  const currentKey = `currentPoints_level${props.levelId}`;
-  sessionStorage.setItem(currentKey, '0');
-  loadPoints();
-  
-  window.addEventListener('storage', handleStorageChange);
-  window.addEventListener('points-updated', handlePointsUpdate);
-  
-  // Poll for changes every 100ms to catch same-window updates
-  const interval = setInterval(loadPoints, 100);
-  
-  onBeforeUnmount(() => {
-    clearInterval(interval);
-  });
-});
+  const currentKey = `currentPoints_level${props.levelId}`
+  sessionStorage.setItem(currentKey, '0')
+  loadPoints()
+
+  window.addEventListener('storage', handleStorageChange)
+  window.addEventListener('points-updated', handlePointsUpdate)
+
+  // Poll for same-window updates
+  intervalId = setInterval(loadPoints, 100)
+})
 
 onBeforeUnmount(() => {
-  window.removeEventListener('storage', handleStorageChange);
-  window.removeEventListener('points-updated', handlePointsUpdate);
-});
+  window.removeEventListener('storage', handleStorageChange)
+  window.removeEventListener('points-updated', handlePointsUpdate)
+  if (intervalId) clearInterval(intervalId)
+})
+
+// Navigation / level progression
+const route = useRoute()
+const router = useRouter()
+
+function parseCurrentLevel() {
+  const match = route.path.match(/\/level(\d+)/)
+  return match ? parseInt(match[1], 10) : NaN
+}
+
+function getCompletedSet() {
+  try {
+    const raw = localStorage.getItem('levelsCompleted')
+    const arr = raw ? JSON.parse(raw) : []
+    return new Set(Array.isArray(arr) ? arr : [])
+  } catch (_) {
+    return new Set()
+  }
+}
+
+function getHighestUnlockedPairEnd() {
+  let highestEnd = 2
+  const completed = getCompletedSet()
+  const pairStarts = [1, 3, 5, 7]
+  for (let i = 0; i < pairStarts.length; i++) {
+    const a = pairStarts[i]
+    const b = a + 1
+    if (i === 0) {
+      if (completed.has(a) && completed.has(b)) {
+        highestEnd = b
+        continue
+      } else {
+        highestEnd = 2
+        break
+      }
+    } else {
+      const prevA = pairStarts[i - 1]
+      const prevB = prevA + 1
+      const prevDone = completed.has(prevA) && completed.has(prevB)
+      if (!prevDone) break
+      highestEnd = b
+      const currDone = completed.has(a) && completed.has(b)
+      if (!currDone) break
+    }
+  }
+  return highestEnd
+}
+
+const currentLevel = computed(() => parseCurrentLevel())
+const highestEnd = computed(() => getHighestUnlockedPairEnd())
+
+const canGoPrev = computed(() => {
+  const n = currentLevel.value
+  if (!Number.isFinite(n)) return false
+  return n > 1
+})
+
+const canGoNext = computed(() => {
+  const n = currentLevel.value
+  if (!Number.isFinite(n)) return false
+  return n + 1 <= highestEnd.value
+})
+
+const currentLevelDisplay = computed(() => {
+  const n = currentLevel.value
+  return Number.isFinite(n) ? n : '-'
+})
+
+function navigateToLevel(n) {
+  if (!Number.isFinite(n)) return
+  try {
+    sessionStorage.setItem('allowLevelNav', String(Date.now()))
+  } catch (_) {}
+  router.push(`/level${n}`)
+}
+
+function goPrev() {
+  const n = currentLevel.value
+  if (Number.isFinite(n) && n > 1) navigateToLevel(n - 1)
+}
+
+function goNext() {
+  const n = currentLevel.value
+  if (Number.isFinite(n) && n + 1 <= highestEnd.value) navigateToLevel(n + 1)
+}
 </script>
 
 <style scoped>
@@ -221,6 +308,40 @@ onBeforeUnmount(() => {
 .placeholder {
   color: #aaa;
   font-size: 1rem;
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(10, 15, 30, 0.6);
+  border: 1px solid rgba(120, 160, 255, 0.25);
+  border-radius: 9999px;
+  padding: 8px 14px;
+  backdrop-filter: blur(6px);
+}
+
+.nav-btn {
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(120, 180, 255, 0.35);
+  background: #1a2a55;
+  color: #e8f3ff;
+  cursor: pointer;
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nav-status {
+  color: #cfe0ff;
+  font-weight: 700;
 }
 
 .game-content {
