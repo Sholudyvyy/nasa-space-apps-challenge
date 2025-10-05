@@ -7,12 +7,8 @@
         class="level-image"
       />
       <div class="image-link-container">
-        <a
-          href="https://smap.jpl.nasa.gov/"
-          target="_blank"
-          class="image-link"
-        >
-          SMAP website
+        <a href="https://worldview.earthdata.nasa.gov/" target="_blank" class="image-link">
+          Worldview website
         </a>
       </div>
     </div>
@@ -31,7 +27,11 @@
               <div class="enter-hint" v-if="!hasActiveQuiz">Press Enter ⏎</div>
             </div>
             <div v-else-if="msg.type === 'img'" class="message-image-container">
-              <img :src="msg.src" :alt="msg.alt || 'Image'" class="message-image" />
+              <img
+                :src="msg.src"
+                :alt="msg.alt || 'Image'"
+                class="message-image"
+              />
               <div class="enter-hint" v-if="!hasActiveQuiz">Press Enter ⏎</div>
             </div>
             <Quiz
@@ -51,11 +51,11 @@
 </template>
 
 <script setup>
-import LevelLayout from '@/layouts/LevelLayout.vue';
-import Message from '@/components/Message.vue';
-import Quiz from '@/components/Quiz.vue';
-import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
-import { useRouter } from 'vue-router';
+import LevelLayout from "@/layouts/LevelLayout.vue";
+import Message from "@/components/Message.vue";
+import Quiz from "@/components/Quiz.vue";
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from "vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 
@@ -65,23 +65,91 @@ document.title = "Polar Lights Yield - Level 8";
 const LEVEL_ID = 8;
 
 const messageTexts = [
-  { type: 'message', text: 'Level 8: The Final Challenge! 🏆' },
-  { type: 'message', text: 'Show me what you\'ve learned!' },
-  { 
-    type: 'quiz',
-    question: 'Final question - What season is this?',
+  { type: "message", text: "The Final Challenge! 🏆" },
+  {
+    type: "quiz",
+    question:
+      "What NASA data obtained by the Shuttle Radar Topography Mission (SRTM) is fundamental to creating accurate field relief maps and identifying areas for targeted soil sampling?",
     variants: [
-      { type: 'text', content: 'Spring' },
-      { type: 'text', content: 'Summer' },
-      { type: 'text', content: 'Fall' },
-      { type: 'text', content: 'Winter' }
+      { type: "text", content: "Soil temperature data" },
+      { type: "text", content: "Vegetation index (NDVI)" },
+      { type: "text", content: "Digital elevation model (DEM)" },
+      { type: "text", content: "Precipitation" },
     ],
-    correctIndex: 3,
-    points: 50,
-    correctMessage: 'Amazing! You\'ve mastered all seasons! ⛄🎉',
-    wrongMessage: 'So close! Winter is here!'
+    correctIndex: 2,
+    points: 20,
+    correctMessage: "Amazing!",
+    wrongMessage: "So close!",
   },
-  { type: 'message', text: 'Congratulations! You completed all levels! 🎊' }
+  {
+    type: "quiz",
+    question:
+      "Which satellite index obtained during the growing season best reflects field heterogeneity (areas with high and low productivity), helping the agronomist determine where to take different soil samples?",
+    variants: [
+      { type: "text", content: "Sea surface temperature (SST)." },
+      { type: "text", content: "Cloud cover" },
+      {
+        type: "text",
+        content: "Normalized Difference Vegetation Index (NDVI)",
+      },
+      { type: "text", content: "Wind speed" },
+    ],
+    correctIndex: 2,
+    points: 30,
+    correctMessage: "You are right!",
+    wrongMessage: "You almost succeeded!",
+  },
+  {
+    type: "quiz",
+    question:
+      "Which two types of space data are most important for creating management zones in the field, allowing agronomists to apply fertilizers in a differentiated manner?",
+    variants: [
+      {
+        type: "text",
+        content: "Data on polar ice caps and atmospheric pressure.",
+      },
+      {
+        type: "text",
+        content: "High-resolution images and ocean temperature.",
+      },
+      {
+        type: "text",
+        content: "Historical yield maps and digital elevation models.",
+      },
+      { type: "text", content: "Amount of solar radiation and noise levels." },
+    ],
+    correctIndex: 2,
+    points: 25,
+    correctMessage:
+      "Correct! VHI combines vegetation and temperature conditions.",
+    wrongMessage: "Try again.",
+  },
+  {
+    type: "quiz",
+    question:
+      "How does SMAP satellite data (on soil moisture) combined with snow cover visualization (Worldview) help agronomists determine the optimal spring time to start soil sampling?",
+    variants: [
+      {
+        type: "text",
+        content: "They indicate the ideal temperature for bacterial growth.",
+      },
+      {
+        type: "text",
+        content:
+          "They help ensure that the soil has thawed and is not too wet (waterlogged) for machinery to drive on.",
+      },
+      { type: "text", content: "They predict future fertilizer prices." },
+      {
+        type: "text",
+        content: "They measure the amount of nitrogen in the air.",
+      },
+    ],
+    correctIndex: 2,
+    points: 25,
+    correctMessage: "Correct!",
+    wrongMessage: "Try again.",
+  },
+  { type: "message", text: "You did it, you played the best game!" },
 ];
 
 let messageIdCounter = 0;
@@ -101,30 +169,33 @@ function scrollToBottom() {
 
 function handleCorrectAnswer(quizId, correctMessage, points) {
   hasActiveQuiz.value = false;
-  
+
   try {
     const currentKey = `currentPoints_level${LEVEL_ID}`;
-    const currentPoints = parseInt(sessionStorage.getItem(currentKey) || '0');
+    const currentPoints = parseInt(sessionStorage.getItem(currentKey) || "0");
     const newPoints = currentPoints + points;
     sessionStorage.setItem(currentKey, newPoints.toString());
-    
-    const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}');
+
+    const levelsProgress = JSON.parse(
+      localStorage.getItem("levelsProgress") || "{}"
+    );
     const levelKey = `level${LEVEL_ID}`;
-    
+
     if (!levelsProgress[levelKey]) {
       levelsProgress[levelKey] = { maxPoint: 100, currentPoint: null };
     }
-    
+
     const bestScore = levelsProgress[levelKey].currentPoint || 0;
     if (newPoints > bestScore) {
       levelsProgress[levelKey].currentPoint = newPoints;
-      localStorage.setItem('levelsProgress', JSON.stringify(levelsProgress));
+      localStorage.setItem("levelsProgress", JSON.stringify(levelsProgress));
     }
-    
-    window.dispatchEvent(new CustomEvent('points-updated', { detail: { levelId: LEVEL_ID } }));
-  } catch (error) {
-  }
-  
+
+    window.dispatchEvent(
+      new CustomEvent("points-updated", { detail: { levelId: LEVEL_ID } })
+    );
+  } catch (error) {}
+
   replaceQuizWithMessage(quizId, correctMessage);
 }
 
@@ -135,36 +206,43 @@ function handleWrongAnswer(quizId, wrongMessage) {
 
 function replaceQuizWithMessage(quizId, messageText) {
   setTimeout(() => {
-    const index = shownMessages.value.findIndex(msg => msg.id === quizId);
+    const index = shownMessages.value.findIndex((msg) => msg.id === quizId);
     if (index !== -1) {
-      shownMessages.value[index] = { id: quizId, type: 'message', text: messageText };
+      shownMessages.value[index] = {
+        id: quizId,
+        type: "message",
+        text: messageText,
+      };
     }
   }, 1500);
 }
 
 function handleKeydown(e) {
-  if (e.key === 'Enter') {
+  if (e.key === "Enter") {
     if (hasActiveQuiz.value) {
       return;
     }
-    
+
     if (currentIndex.value < messageTexts.length) {
       if (shownMessages.value.length >= 4) {
         shownMessages.value.shift();
       }
-      
-      const nextMessage = { id: messageIdCounter++, ...messageTexts[currentIndex.value] };
+
+      const nextMessage = {
+        id: messageIdCounter++,
+        ...messageTexts[currentIndex.value],
+      };
       shownMessages.value.push(nextMessage);
       currentIndex.value += 1;
-      
-      if (nextMessage.type === 'quiz') {
+
+      if (nextMessage.type === "quiz") {
         hasActiveQuiz.value = true;
       }
-      
+
       if (currentIndex.value === messageTexts.length) {
         markLevelCompleted();
       }
-      
+
       nextTick().then(scrollToBottom);
     }
   }
@@ -172,26 +250,27 @@ function handleKeydown(e) {
 
 function markLevelCompleted() {
   try {
-    const levelsCompleted = JSON.parse(localStorage.getItem('levelsCompleted') || '[]');
+    const levelsCompleted = JSON.parse(
+      localStorage.getItem("levelsCompleted") || "[]"
+    );
     if (!levelsCompleted.includes(LEVEL_ID)) {
       levelsCompleted.push(LEVEL_ID);
-      localStorage.setItem('levelsCompleted', JSON.stringify(levelsCompleted));
+      localStorage.setItem("levelsCompleted", JSON.stringify(levelsCompleted));
     }
-    sessionStorage.setItem('allowLevelNav', Date.now().toString());
+    sessionStorage.setItem("allowLevelNav", Date.now().toString());
     setTimeout(() => {
-      router.push('/menu');
+      router.push("/menu");
     }, 2000);
-  } catch (error) {
-  }
+  } catch (error) {}
 }
 
 onMounted(() => {
-  window.addEventListener('keydown', handleKeydown);
+  window.addEventListener("keydown", handleKeydown);
   nextTick().then(scrollToBottom);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener("keydown", handleKeydown);
 });
 
 watch(shownMessages, async () => {
@@ -242,20 +321,34 @@ watch(shownMessages, async () => {
 }
 
 .chat-list::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(74, 158, 255, 0.6), rgba(106, 179, 255, 0.8));
+  background: linear-gradient(
+    180deg,
+    rgba(74, 158, 255, 0.6),
+    rgba(106, 179, 255, 0.8)
+  );
   border-radius: 10px;
   border: 1px solid rgba(74, 158, 255, 0.3);
-  box-shadow: 0 0 10px rgba(74, 158, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 10px rgba(74, 158, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
 .chat-list::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(74, 158, 255, 0.8), rgba(106, 179, 255, 1));
-  box-shadow: 0 0 15px rgba(74, 158, 255, 0.7), 0 0 25px rgba(74, 158, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(74, 158, 255, 0.8),
+    rgba(106, 179, 255, 1)
+  );
+  box-shadow: 0 0 15px rgba(74, 158, 255, 0.7), 0 0 25px rgba(74, 158, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .chat-list::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(180deg, rgba(106, 179, 255, 1), rgba(74, 158, 255, 0.9));
+  background: linear-gradient(
+    180deg,
+    rgba(106, 179, 255, 1),
+    rgba(74, 158, 255, 0.9)
+  );
 }
 
 .chat-list :deep(.message-container) {
@@ -317,7 +410,8 @@ watch(shownMessages, async () => {
 }
 
 @keyframes hint-pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.7;
     transform: scale(1);
   }
@@ -360,7 +454,8 @@ watch(shownMessages, async () => {
   backdrop-filter: blur(10px);
   transition: all 0.3s ease;
   text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
-  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 .image-link:hover {
@@ -368,11 +463,13 @@ watch(shownMessages, async () => {
   background: rgba(255, 215, 0, 0.2);
   border-color: #fff;
   transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
 .image-link:active {
   transform: translateY(0);
-  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 </style>
