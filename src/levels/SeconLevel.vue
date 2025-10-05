@@ -100,10 +100,6 @@ function scrollToBottom() {
 }
 
 function handleCorrectAnswer(quizId, correctMessage, points) {
-<<<<<<< HEAD
-  console.log("✅ Correct answer!");
-=======
->>>>>>> 1f337498206312e5a6c8d9e98f4162538af83d8b
   hasActiveQuiz.value = false;
 
   try {
@@ -112,7 +108,6 @@ function handleCorrectAnswer(quizId, correctMessage, points) {
     const currentPoints = parseInt(sessionStorage.getItem(currentKey) || "0");
     const newPoints = currentPoints + points;
     sessionStorage.setItem(currentKey, newPoints.toString());
-<<<<<<< HEAD
     console.log(
       `🎯 Level ${LEVEL_ID}: Added ${points} points! Current: ${newPoints}`
     );
@@ -120,10 +115,7 @@ function handleCorrectAnswer(quizId, correctMessage, points) {
     const levelsProgress = JSON.parse(
       localStorage.getItem("levelsProgress") || "{}"
     );
-=======
-    
-    const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}');
->>>>>>> 1f337498206312e5a6c8d9e98f4162538af83d8b
+
     const levelKey = `level${LEVEL_ID}`;
 
     if (!levelsProgress[levelKey]) {
@@ -133,12 +125,8 @@ function handleCorrectAnswer(quizId, correctMessage, points) {
     const bestScore = levelsProgress[levelKey].currentPoint || 0;
     if (newPoints > bestScore) {
       levelsProgress[levelKey].currentPoint = newPoints;
-<<<<<<< HEAD
       localStorage.setItem("levelsProgress", JSON.stringify(levelsProgress));
       console.log(`🏆 Level ${LEVEL_ID}: New best score: ${newPoints}!`);
-=======
-      localStorage.setItem('levelsProgress', JSON.stringify(levelsProgress));
->>>>>>> 1f337498206312e5a6c8d9e98f4162538af83d8b
     }
 
     window.dispatchEvent(
@@ -147,20 +135,14 @@ function handleCorrectAnswer(quizId, correctMessage, points) {
       })
     );
   } catch (error) {
-<<<<<<< HEAD
     console.error("Error saving points:", error);
-=======
->>>>>>> 1f337498206312e5a6c8d9e98f4162538af83d8b
   }
 
   replaceQuizWithMessage(quizId, correctMessage);
 }
 
 function handleWrongAnswer(quizId, wrongMessage) {
-<<<<<<< HEAD
   console.log("❌ Wrong answer!");
-=======
->>>>>>> 1f337498206312e5a6c8d9e98f4162538af83d8b
   hasActiveQuiz.value = false;
   replaceQuizWithMessage(quizId, wrongMessage);
 }
@@ -181,10 +163,7 @@ function replaceQuizWithMessage(quizId, messageText) {
 function handleKeydown(e) {
   if (e.key === "Enter") {
     if (hasActiveQuiz.value) {
-<<<<<<< HEAD
       console.log("⚠️ Please answer the quiz before continuing");
-=======
->>>>>>> 1f337498206312e5a6c8d9e98f4162538af83d8b
       return;
     }
 
@@ -221,12 +200,8 @@ function markLevelCompleted() {
 
     if (!levelsCompleted.includes(LEVEL_ID)) {
       levelsCompleted.push(LEVEL_ID);
-<<<<<<< HEAD
       localStorage.setItem("levelsCompleted", JSON.stringify(levelsCompleted));
       console.log(`✅ Level ${LEVEL_ID} completed and saved!`);
-=======
-      localStorage.setItem('levelsCompleted', JSON.stringify(levelsCompleted));
->>>>>>> 1f337498206312e5a6c8d9e98f4162538af83d8b
     }
 
     sessionStorage.setItem("allowLevelNav", Date.now().toString());
@@ -235,10 +210,7 @@ function markLevelCompleted() {
       router.push(`/level${LEVEL_ID + 1}`);
     }, 1000);
   } catch (error) {
-<<<<<<< HEAD
     console.error("Error saving level completion:", error);
-=======
->>>>>>> 1f337498206312e5a6c8d9e98f4162538af83d8b
   }
 }
 
