@@ -132,7 +132,39 @@ const handleOpenLevelSelector = () => {
   showLevelSelector.value = true;
 };
 
+const initializeLevelsProgress = () => {
+  try {
+    // Check if levelsProgress already exists in localStorage
+    const existingProgress = localStorage.getItem('levelsProgress');
+    
+    if (!existingProgress) {
+      // Initialize levels progress object
+      const levelsProgress = {
+        level0: { maxPoint: 100, currentPoint: null }, // Tutorial level
+        level1: { maxPoint: 100, currentPoint: null }, // null means not started/not open
+        level2: { maxPoint: 100, currentPoint: null },
+        level3: { maxPoint: 100, currentPoint: null },
+        level4: { maxPoint: 100, currentPoint: null },
+        level5: { maxPoint: 100, currentPoint: null },
+        level6: { maxPoint: 100, currentPoint: null },
+        level7: { maxPoint: 100, currentPoint: null },
+        level8: { maxPoint: 100, currentPoint: null }
+      };
+      
+      localStorage.setItem('levelsProgress', JSON.stringify(levelsProgress));
+      console.log('✅ Levels progress initialized');
+    } else {
+      console.log('✅ Levels progress already exists');
+    }
+  } catch (error) {
+    console.error('Error initializing levels progress:', error);
+  }
+};
+
 onMounted(() => {
+  // Initialize levels progress on app start
+  initializeLevelsProgress();
+  
   window.addEventListener("hyperspace-start", handleHyperspaceStart);
   window.addEventListener("hyperspace-end", handleHyperspaceEnd);
   window.addEventListener("open-level-selector", handleOpenLevelSelector);
@@ -185,6 +217,49 @@ html {
   width: 100%;
   overflow: hidden;
   position: relative;
+}
+
+/* Global Beautiful Scrollbar Styles */
+* {
+  &::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(10, 15, 30, 0.4);
+    border-radius: 10px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(74, 158, 255, 0.5), rgba(106, 179, 255, 0.7));
+    border-radius: 10px;
+    border: 1px solid rgba(74, 158, 255, 0.3);
+    box-shadow: 
+      0 0 8px rgba(74, 158, 255, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    transition: all 0.3s ease;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(74, 158, 255, 0.7), rgba(106, 179, 255, 0.9));
+    box-shadow: 
+      0 0 12px rgba(74, 158, 255, 0.6),
+      0 0 20px rgba(74, 158, 255, 0.3),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background: linear-gradient(180deg, rgba(106, 179, 255, 0.9), rgba(74, 158, 255, 0.8));
+  }
+
+  &::-webkit-scrollbar-corner {
+    background: rgba(10, 15, 30, 0.4);
+  }
+
+  /* Firefox */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(74, 158, 255, 0.6) rgba(10, 15, 30, 0.4);
 }
 
 .stars {
@@ -403,6 +478,7 @@ html {
     rgba(70, 90, 120, 0.8) 100%
   );
   outline: none;
+  appearance: none;
   -webkit-appearance: none;
   box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
 
