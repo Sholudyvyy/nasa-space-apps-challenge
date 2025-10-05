@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <div class="stars"></div>
     <router-view></router-view>
   </div>
 </template>
@@ -29,7 +30,7 @@ html {
   position: relative;
 }
 
-body {
+.stars {
   position: fixed;
   top: 50%;
   left: 50%;
