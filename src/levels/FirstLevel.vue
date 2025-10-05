@@ -10,15 +10,18 @@
       <div class="chat-content">
         <div class="chat-list" ref="chatListRef">
           <template v-for="msg in shownMessages" :key="msg.id">
-            <Message
-              v-if="msg.type === 'message'"
-              :text="msg.text"
-              type="info"
-              :enableTyping="true"
-              @typingComplete="scrollToBottom"
-            />
+            <div v-if="msg.type === 'message'" class="message-wrapper">
+              <Message
+                :text="msg.text"
+                type="info"
+                :enableTyping="true"
+                @typingComplete="scrollToBottom"
+              />
+              <div class="enter-hint" v-if="!hasActiveQuiz">Press Enter ⏎</div>
+            </div>
             <div v-else-if="msg.type === 'img'" class="message-image-container">
               <img :src="msg.src" :alt="msg.alt || 'Image'" class="message-image" />
+              <div class="enter-hint" v-if="!hasActiveQuiz">Press Enter ⏎</div>
             </div>
             <Quiz
               v-else-if="msg.type === 'quiz'"
@@ -332,7 +335,13 @@ watch(shownMessages, async () => {
   flex-shrink: 0;
 }
 
+.message-wrapper {
+  position: relative;
+  flex-shrink: 0;
+}
+
 .message-image-container {
+  position: relative;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -346,5 +355,38 @@ watch(shownMessages, async () => {
   max-height: 300px;
   border-radius: 8px;
   object-fit: contain;
+}
+
+.enter-hint {
+  position: absolute;
+  bottom: 8px;
+  right: 12px;
+  font-size: 0.7rem;
+  color: rgba(106, 179, 255, 0.8);
+  background: rgba(10, 15, 30, 0.8);
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(74, 158, 255, 0.4);
+  backdrop-filter: blur(5px);
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 
+    0 2px 8px rgba(0, 0, 0, 0.3),
+    0 0 10px rgba(74, 158, 255, 0.2);
+  animation: hint-pulse 2s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@keyframes hint-pulse {
+  0%, 100% {
+    opacity: 0.7;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.03);
+  }
 }
 </style>
