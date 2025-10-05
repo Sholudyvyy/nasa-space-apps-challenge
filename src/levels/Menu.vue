@@ -4,7 +4,7 @@
 
     <div class="menu-buttons">
       <h1 class="menu-title">{{ titleText }}</h1>
-      <router-link to="/level0" class="play-button">Play</router-link>
+      <button class="play-button" @click="startGame">Play</button>
       <button class="seasons-button" @click="openLevelSelector">Seasons</button>
       <button class="more-info-button">More info</button>
     </div>
@@ -17,6 +17,7 @@
 
 <script setup>
 import { ref, computed, onMounted, onUnmounted } from "vue";
+import { useRouter } from "vue-router";
 import moskot5 from "@/assets/images/moskot/moskot5.png";
 import moskot4 from "@/assets/images/moskot/moskot4.png";
 import moskot3 from "@/assets/images/moskot/moskot3.png";
@@ -50,6 +51,8 @@ const currentSrc = computed(() => frames[currentIdx.value]);
 let dx = Math.random() > 0.5 ? 2 : -2;
 let dy = Math.random() > 0.5 ? 2 : -2;
 let frameId;
+
+const router = useRouter();
 
 onMounted(() => {
   // start at a random in-bounds position
@@ -102,6 +105,13 @@ onUnmounted(() => {
 const openLevelSelector = () => {
   console.log("Seasons button clicked");
   window.dispatchEvent(new CustomEvent("open-level-selector"));
+};
+
+const startGame = () => {
+  try {
+    sessionStorage.setItem("allowLevelNav", String(Date.now()));
+  } catch (_) {}
+  router.push("/level0");
 };
 </script>
 

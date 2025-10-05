@@ -22,11 +22,11 @@
               </div>
               <p class="desc">{{ challenge.description }}</p>
               <div class="actions">
-                <router-link
+                <button
                   v-if="season.unlocked"
                   class="play"
-                  :to="challenge.route"
-                >Start</router-link>
+                  @click="startLevel(challenge.route)"
+                >Start</button>
                 <button v-else class="locked-btn" disabled>Locked</button>
               </div>
             </div>
@@ -39,6 +39,7 @@
 
 <script setup>
 import { computed } from 'vue'
+import { useRouter } from 'vue-router'
 import LevelSelector from './LevelSelector.vue'
 
 // Demo images: reuse favicon as placeholder; replace with real images if available
@@ -106,6 +107,16 @@ const seasons = computed(() => {
     return { ...s, unlocked: prevComplete }
   })
 })
+
+const router = useRouter()
+
+function startLevel(route) {
+  try {
+    // mark as allowed for a short window; router guard will consume it
+    sessionStorage.setItem('allowLevelNav', String(Date.now()))
+  } catch (_) {}
+  router.push(route)
+}
 </script>
 
 <style scoped>

@@ -78,8 +78,31 @@ const router = createRouter({
   ],
 })
 
+// Helper: check if path is a level route like /level1, /level2, ...
+function isLevelRoute(path) {
+  return /^\/level\d+$/.test(path)
+}
+
 // Trigger hyperspace effect before navigating to the next level
 router.beforeEach(async (to, from) => {
+  // Block direct URL entry to level routes unless explicitly allowed by a prior click
+  if (isLevelRoute(to.path)) {
+    try {
+      const tokenRaw = sessionStorage.getItem('allowLevelNav')
+      const token = tokenRaw ? parseInt(tokenRaw, 10) : 0
+      const now = Date.now()
+      const isFresh = token && now - token < 3000 // 3s validity
+      // Consume token regardless to avoid reuse
+      sessionStorage.removeItem('allowLevelNav')
+      if (!isFresh) {
+        // deny navigation and redirect to menu
+        return { name: 'Menu' }
+      }
+    } catch (_) {
+      return { name: 'Menu' }
+    }
+  }
+
   // Skip on initial load or when navigating to the same route
   if (!from.name || to.fullPath === from.fullPath) {
     return true
