@@ -50,23 +50,79 @@ const router = useRouter();
 const LEVEL_ID = 3;
 
 const messageTexts = [
-  { type: 'message', text: 'Welcome to Level 3! Autumn is here 🍂' },
-  { type: 'message', text: 'Let\'s explore the fall season.' },
-  { 
+  { type: 'message', text: 'Level 3 — Satellite-Based Drought Monitoring for Crop Loss Forecasting 🌾🛰️' },
+  { type: 'message', text: 'This quiz uses NASA Earth Observation data (MODIS) and indices for agricultural drought and crop yield forecasting. Choose the best answer for each question.' },
+  {
     type: 'quiz',
-    question: 'Which season is displayed in the main image?',
+    question: 'Q1. Which NASA sensor on Terra & Aqua provides Land Surface Reflectance and LST for many drought indices?',
     variants: [
-      { type: 'text', content: 'Spring' },
-      { type: 'text', content: 'Summer' },
-      { type: 'text', content: 'Fall' },
-      { type: 'text', content: 'Winter' }
+      { type: 'text', content: 'A) Landsat Thematic Mapper (TM)' },
+      { type: 'text', content: 'B) Gravity Recovery and Climate Experiment (GRACE)' },
+      { type: 'text', content: 'C) Moderate Resolution Imaging Spectroradiometer (MODIS)' },
+      { type: 'text', content: 'D) Global Precipitation Measurement (GPM)' }
     ],
     correctIndex: 2,
-    points: 25,
-    correctMessage: 'Excellent! It\'s Fall! 🍁',
-    wrongMessage: 'Not quite right. Look at the colors!'
+    points: 20,
+    correctMessage: 'Correct! MODIS provides key reflectance and LST inputs.',
+    wrongMessage: 'Not quite. Hint: It\'s the MODIS instrument on Terra/Aqua.'
   },
-  { type: 'message', text: 'Amazing work! On to the next level!' }
+  {
+    type: 'quiz',
+    question: 'Q2. Which composite index is widely used for ag. drought monitoring and predicting crop yield loss (combining vegetation health and thermal stress)?',
+    variants: [
+      { type: 'text', content: 'A) Vegetation Health Index (VHI)' },
+      { type: 'text', content: 'B) Standardized Precipitation Index (SPI)' },
+      { type: 'text', content: 'C) Normalized Difference Vegetation Index (NDVI)' },
+      { type: 'text', content: 'D) Normalized Difference Water Index (NDWI)' }
+    ],
+    correctIndex: 0,
+    points: 20,
+    correctMessage: 'Correct! VHI combines vegetation and temperature conditions.',
+    wrongMessage: 'Try again. The composite index is VHI.'
+  },
+  {
+    type: 'quiz',
+    question: 'Q3. VHI combines two components. Which assesses the relative “greenness” by comparing current to historical min/max?',
+    variants: [
+      { type: 'text', content: 'A) Temperature Condition Index (TCI)' },
+      { type: 'text', content: 'B) Vegetation Condition Index (VCI)' },
+      { type: 'text', content: 'C) Land Surface Temperature (LST)' },
+      { type: 'text', content: 'D) Normalized Difference Drought Index (NDDI)' }
+    ],
+    correctIndex: 1,
+    points: 20,
+    correctMessage: 'Correct! VCI measures relative greenness vs historical bounds.',
+    wrongMessage: 'Close. The vigor component is VCI.'
+  },
+  {
+    type: 'quiz',
+    question: 'Q4. NDVI is computed from red and NIR reflectance. A value near +1.0 typically indicates…',
+    variants: [
+      { type: 'text', content: 'A) Bare soil or open water' },
+      { type: 'text', content: 'B) Low water content in canopy (water stress)' },
+      { type: 'text', content: 'C) Severe drought and poor vegetation health' },
+      { type: 'text', content: 'D) Dense and healthy vegetation cover' }
+    ],
+    correctIndex: 3,
+    points: 20,
+    correctMessage: 'Correct! High NDVI corresponds to dense, healthy vegetation.',
+    wrongMessage: 'Not this time. High NDVI means dense, healthy vegetation.'
+  },
+  {
+    type: 'quiz',
+    question: 'Q5. What is the primary goal of indices like VHI, NDWI, and VCI in ag. monitoring (e.g., FEWS NET, GEO GLAM)?',
+    variants: [
+      { type: 'text', content: 'A) Track glaciers and polar ice caps' },
+      { type: 'text', content: 'B) Measure atmospheric CO2 concentration' },
+      { type: 'text', content: 'C) Monitor crop health, detect early drought, forecast yield loss' },
+      { type: 'text', content: 'D) Predict hurricane track and intensity' }
+    ],
+    correctIndex: 2,
+    points: 20,
+    correctMessage: 'Correct! These indices help monitor crops and forecast impacts.',
+    wrongMessage: 'Hint: It\'s about monitoring crops and forecasting yield loss.'
+  },
+  { type: 'message', text: 'Great job! You\'ve completed the drought monitoring quiz.' }
 ];
 
 let messageIdCounter = 0;
