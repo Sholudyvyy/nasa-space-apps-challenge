@@ -1,11 +1,39 @@
 <template>
   <div id="app">
-    <div class="stars"></div>
-    <router-view></router-view>
+    <div class="stars" :class="{ hyperspace: isHyperspace }"></div>
+    <div class="view" :class="{ 'fade-out': isHyperspace }">
+      <router-view v-slot="{ Component }">
+        <transition name="page" mode="out-in">
+          <component :is="Component" />
+        </transition>
+      </router-view>
+    </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { ref, onMounted, onBeforeUnmount } from 'vue'
+
+const isHyperspace = ref(false)
+
+const handleHyperspaceStart = (e) => {
+  isHyperspace.value = true
+}
+
+const handleHyperspaceEnd = () => {
+  isHyperspace.value = false
+}
+
+onMounted(() => {
+  window.addEventListener('hyperspace-start', handleHyperspaceStart)
+  window.addEventListener('hyperspace-end', handleHyperspaceEnd)
+})
+
+onBeforeUnmount(() => {
+  window.removeEventListener('hyperspace-start', handleHyperspaceStart)
+  window.removeEventListener('hyperspace-end', handleHyperspaceEnd)
+})
+</script>
 
 <style lang="scss">
 // Variables
@@ -38,6 +66,8 @@ html {
   width: 1px;
   background-color: $star-color;
   border-radius: 50%;
+  transform-origin: center center;
+  will-change: transform, filter, opacity;
   
   // Layer 1: Primary stars
   box-shadow: 
@@ -129,6 +159,36 @@ html {
   animation: zoom $animation-duration alternate infinite;
 }
 
+// Hyperspace state: brighten, stretch outward, then fade
+.stars.hyperspace {
+  animation: hyperspace 0.9s ease-in forwards;
+  filter: brightness(2);
+}
+
+// View fade wrapper (pre-route fade out on hyperspace)
+.view {
+  position: relative;
+  transition: opacity 0.4s ease;
+}
+
+.view.fade-out {
+  opacity: 0;
+}
+
+// Route transition (new page fade-in)
+.page-enter-active {
+  transition: opacity 0.5s ease 0.1s;
+}
+
+.page-leave-active {
+  transition: opacity 0.2s ease;
+}
+
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+}
+
 // Animations
 @keyframes zoom {
   0% {
@@ -137,6 +197,24 @@ html {
   
   100% {
     transform: scale(1.5);
+  }
+}
+
+@keyframes hyperspace {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+    filter: brightness(1);
+  }
+  60% {
+    transform: scale(3);
+    opacity: 1;
+    filter: brightness(3) blur(0.4px);
+  }
+  100% {
+    transform: scale(6);
+    opacity: 0;
+    filter: brightness(1) blur(0.6px);
   }
 }
 </style>
