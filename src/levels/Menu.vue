@@ -5,6 +5,7 @@
     <div class="menu-buttons">
       <h1 class="menu-title">{{ titleText }}</h1>
       <router-link to="/level0" class="play-button">Play</router-link>
+      <button class="seasons-button" @click="openLevelSelector">Seasons</button>
       <button class="more-info-button">More info</button>
     </div>
 
@@ -97,6 +98,11 @@ onMounted(() => {
 onUnmounted(() => {
   if (frameId) cancelAnimationFrame(frameId);
 });
+
+const openLevelSelector = () => {
+  console.log("Seasons button clicked");
+  window.dispatchEvent(new CustomEvent("open-level-selector"));
+};
 </script>
 
 <style scoped lang="scss">
@@ -163,6 +169,38 @@ $bg-color: #000;
   &:hover {
     transform: translateY(-2px);
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4),
+      inset 0 2px 4px rgba(255, 255, 255, 0.4);
+  }
+
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+}
+
+.seasons-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 190px;
+  height: 70px;
+  background: linear-gradient(145deg, #e0e0e0, #c0c0c0);
+  border: none;
+  border-radius: 12px;
+  color: #000;
+  font-size: 20px;
+  font-weight: bold;
+  font-family: sans-serif;
+  cursor: pointer;
+  text-decoration: none;
+  -webkit-tap-highlight-color: transparent;
+  box-shadow: 0 7px 14px rgba(0, 0, 0, 0.3),
+    inset 0 2px 4px rgba(255, 255, 255, 0.3);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4),
       inset 0 2px 4px rgba(255, 255, 255, 0.4);
   }
 

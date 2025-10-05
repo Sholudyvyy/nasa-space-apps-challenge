@@ -2,7 +2,10 @@
   <div id="app">
     <div class="stars" :class="{ hyperspace: isHyperspace }"></div>
 
-    <LevelSelector />
+    <LevelSelector
+      :external-open="showLevelSelector"
+      @close="showLevelSelector = false"
+    />
 
     <!-- Settings button -->
     <button
@@ -62,12 +65,13 @@
 </template>
 
 <script setup>
-import LevelSelector from './components/LevelSelector.vue'
+import LevelSelector from "./components/LevelSelector.vue";
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const isHyperspace = ref(false);
 const bgMusic = ref(null);
 const showSettings = ref(false);
+const showLevelSelector = ref(false);
 
 // Load volume from localStorage or use default
 const savedVolume = localStorage.getItem("musicVolume");
@@ -125,9 +129,15 @@ const toggleMute = () => {
   }
 };
 
+const handleOpenLevelSelector = () => {
+  console.log("Opening level selector");
+  showLevelSelector.value = true;
+};
+
 onMounted(() => {
   window.addEventListener("hyperspace-start", handleHyperspaceStart);
   window.addEventListener("hyperspace-end", handleHyperspaceEnd);
+  window.addEventListener("open-level-selector", handleOpenLevelSelector);
 
   if (bgMusic.value) {
     // Apply saved volume and mute state
@@ -152,6 +162,7 @@ onMounted(() => {
 onBeforeUnmount(() => {
   window.removeEventListener("hyperspace-start", handleHyperspaceStart);
   window.removeEventListener("hyperspace-end", handleHyperspaceEnd);
+  window.removeEventListener("open-level-selector", handleOpenLevelSelector);
 });
 </script>
 
