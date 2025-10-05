@@ -14,6 +14,7 @@
       
       <h3>Difficulty: Beginner</h3>
       <p>Estimated completion time: 5-10 minutes</p>
+
     </div>
   </div>
 </template>

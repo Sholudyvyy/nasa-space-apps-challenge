@@ -72,4 +72,30 @@ const router = createRouter({
   ],
 })
 
+// Trigger hyperspace effect before navigating to the next level
+router.beforeEach(async (to, from) => {
+  // Skip on initial load or when navigating to the same route
+  if (!from.name || to.fullPath === from.fullPath) {
+    return true
+  }
+
+  const durationMs = 900
+  try {
+    window.dispatchEvent(new CustomEvent('hyperspace-start', { detail: { durationMs } }))
+  } catch (e) {
+    // no-op if window not available (SSR), just proceed
+  }
+
+  await new Promise((resolve) => setTimeout(resolve, durationMs))
+  return true
+})
+
+router.afterEach(() => {
+  try {
+    window.dispatchEvent(new CustomEvent('hyperspace-end'))
+  } catch (e) {
+    // no-op
+  }
+})
+
 export default router
