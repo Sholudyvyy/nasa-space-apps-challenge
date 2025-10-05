@@ -1,10 +1,17 @@
 <template>
   <LevelLayout :levelId="3">
-    <img
-      src="@/assets/images/s/fall.jpg"
-      alt="third-level"
-      class="level-image"
-    />
+    <div class="image-container">
+      <img
+        src="@/assets/images/s/fall.jpg"
+        alt="third-level"
+        class="level-image"
+      />
+      <div class="image-link-container">
+        <a href="https://smap.jpl.nasa.gov/" target="_blank" class="image-link">
+          SMAP website
+        </a>
+      </div>
+    </div>
 
     <template #chat>
       <div class="chat-content">
@@ -20,7 +27,11 @@
               <div class="enter-hint" v-if="!hasActiveQuiz">Press Enter ⏎</div>
             </div>
             <div v-else-if="msg.type === 'img'" class="message-image-container">
-              <img :src="msg.src" :alt="msg.alt || 'Image'" class="message-image" />
+              <img
+                :src="msg.src"
+                :alt="msg.alt || 'Image'"
+                class="message-image"
+              />
               <div class="enter-hint" v-if="!hasActiveQuiz">Press Enter ⏎</div>
             </div>
             <Quiz
@@ -40,89 +51,127 @@
 </template>
 
 <script setup>
-import LevelLayout from '@/layouts/LevelLayout.vue';
-import Message from '@/components/Message.vue';
-import Quiz from '@/components/Quiz.vue';
-import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
-import { useRouter } from 'vue-router';
+import LevelLayout from "@/layouts/LevelLayout.vue";
+import Message from "@/components/Message.vue";
+import Quiz from "@/components/Quiz.vue";
+import { ref, onMounted, onBeforeUnmount, watch, nextTick } from "vue";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const LEVEL_ID = 3;
 
 const messageTexts = [
-  { type: 'message', text: 'Level 3 — Satellite-Based Drought Monitoring for Crop Loss Forecasting 🌾🛰️' },
-  { type: 'message', text: 'This quiz uses NASA Earth Observation data (MODIS) and indices for agricultural drought and crop yield forecasting. Choose the best answer for each question.' },
   {
-    type: 'quiz',
-    question: 'Q1. Which NASA sensor on Terra & Aqua provides Land Surface Reflectance and LST for many drought indices?',
+    type: "message",
+    text: "Level 3 — Satellite-Based Drought Monitoring for Crop Loss Forecasting 🌾🛰️",
+  },
+  {
+    type: "message",
+    text: "This quiz uses NASA Earth Observation data (MODIS) and indices for agricultural drought and crop yield forecasting. Choose the best answer for each question.",
+  },
+  {
+    type: "quiz",
+    question:
+      "Q1. Which NASA sensor on Terra & Aqua provides Land Surface Reflectance and LST for many drought indices?",
     variants: [
-      { type: 'text', content: 'A) Landsat Thematic Mapper (TM)' },
-      { type: 'text', content: 'B) Gravity Recovery and Climate Experiment (GRACE)' },
-      { type: 'text', content: 'C) Moderate Resolution Imaging Spectroradiometer (MODIS)' },
-      { type: 'text', content: 'D) Global Precipitation Measurement (GPM)' }
+      { type: "text", content: "A) Landsat Thematic Mapper (TM)" },
+      {
+        type: "text",
+        content: "B) Gravity Recovery and Climate Experiment (GRACE)",
+      },
+      {
+        type: "text",
+        content: "C) Moderate Resolution Imaging Spectroradiometer (MODIS)",
+      },
+      { type: "text", content: "D) Global Precipitation Measurement (GPM)" },
     ],
     correctIndex: 2,
     points: 20,
-    correctMessage: 'Correct! MODIS provides key reflectance and LST inputs.',
-    wrongMessage: 'Not quite. Hint: It\'s the MODIS instrument on Terra/Aqua.'
+    correctMessage: "Correct! MODIS provides key reflectance and LST inputs.",
+    wrongMessage: "Not quite. Hint: It's the MODIS instrument on Terra/Aqua.",
   },
   {
-    type: 'quiz',
-    question: 'Q2. Which composite index is widely used for ag. drought monitoring and predicting crop yield loss (combining vegetation health and thermal stress)?',
+    type: "quiz",
+    question:
+      "Q2. Which composite index is widely used for ag. drought monitoring and predicting crop yield loss (combining vegetation health and thermal stress)?",
     variants: [
-      { type: 'text', content: 'A) Vegetation Health Index (VHI)' },
-      { type: 'text', content: 'B) Standardized Precipitation Index (SPI)' },
-      { type: 'text', content: 'C) Normalized Difference Vegetation Index (NDVI)' },
-      { type: 'text', content: 'D) Normalized Difference Water Index (NDWI)' }
+      { type: "text", content: "A) Vegetation Health Index (VHI)" },
+      { type: "text", content: "B) Standardized Precipitation Index (SPI)" },
+      {
+        type: "text",
+        content: "C) Normalized Difference Vegetation Index (NDVI)",
+      },
+      { type: "text", content: "D) Normalized Difference Water Index (NDWI)" },
     ],
     correctIndex: 0,
     points: 20,
-    correctMessage: 'Correct! VHI combines vegetation and temperature conditions.',
-    wrongMessage: 'Try again. The composite index is VHI.'
+    correctMessage:
+      "Correct! VHI combines vegetation and temperature conditions.",
+    wrongMessage: "Try again. The composite index is VHI.",
   },
   {
-    type: 'quiz',
-    question: 'Q3. VHI combines two components. Which assesses the relative “greenness” by comparing current to historical min/max?',
+    type: "quiz",
+    question:
+      "Q3. VHI combines two components. Which assesses the relative “greenness” by comparing current to historical min/max?",
     variants: [
-      { type: 'text', content: 'A) Temperature Condition Index (TCI)' },
-      { type: 'text', content: 'B) Vegetation Condition Index (VCI)' },
-      { type: 'text', content: 'C) Land Surface Temperature (LST)' },
-      { type: 'text', content: 'D) Normalized Difference Drought Index (NDDI)' }
+      { type: "text", content: "A) Temperature Condition Index (TCI)" },
+      { type: "text", content: "B) Vegetation Condition Index (VCI)" },
+      { type: "text", content: "C) Land Surface Temperature (LST)" },
+      {
+        type: "text",
+        content: "D) Normalized Difference Drought Index (NDDI)",
+      },
     ],
     correctIndex: 1,
     points: 20,
-    correctMessage: 'Correct! VCI measures relative greenness vs historical bounds.',
-    wrongMessage: 'Close. The vigor component is VCI.'
+    correctMessage:
+      "Correct! VCI measures relative greenness vs historical bounds.",
+    wrongMessage: "Close. The vigor component is VCI.",
   },
   {
-    type: 'quiz',
-    question: 'Q4. NDVI is computed from red and NIR reflectance. A value near +1.0 typically indicates…',
+    type: "quiz",
+    question:
+      "Q4. NDVI is computed from red and NIR reflectance. A value near +1.0 typically indicates…",
     variants: [
-      { type: 'text', content: 'A) Bare soil or open water' },
-      { type: 'text', content: 'B) Low water content in canopy (water stress)' },
-      { type: 'text', content: 'C) Severe drought and poor vegetation health' },
-      { type: 'text', content: 'D) Dense and healthy vegetation cover' }
+      { type: "text", content: "A) Bare soil or open water" },
+      {
+        type: "text",
+        content: "B) Low water content in canopy (water stress)",
+      },
+      { type: "text", content: "C) Severe drought and poor vegetation health" },
+      { type: "text", content: "D) Dense and healthy vegetation cover" },
     ],
     correctIndex: 3,
     points: 20,
-    correctMessage: 'Correct! High NDVI corresponds to dense, healthy vegetation.',
-    wrongMessage: 'Not this time. High NDVI means dense, healthy vegetation.'
+    correctMessage:
+      "Correct! High NDVI corresponds to dense, healthy vegetation.",
+    wrongMessage: "Not this time. High NDVI means dense, healthy vegetation.",
   },
   {
-    type: 'quiz',
-    question: 'Q5. What is the primary goal of indices like VHI, NDWI, and VCI in ag. monitoring (e.g., FEWS NET, GEO GLAM)?',
+    type: "quiz",
+    question:
+      "Q5. What is the primary goal of indices like VHI, NDWI, and VCI in ag. monitoring (e.g., FEWS NET, GEO GLAM)?",
     variants: [
-      { type: 'text', content: 'A) Track glaciers and polar ice caps' },
-      { type: 'text', content: 'B) Measure atmospheric CO2 concentration' },
-      { type: 'text', content: 'C) Monitor crop health, detect early drought, forecast yield loss' },
-      { type: 'text', content: 'D) Predict hurricane track and intensity' }
+      { type: "text", content: "A) Track glaciers and polar ice caps" },
+      { type: "text", content: "B) Measure atmospheric CO2 concentration" },
+      {
+        type: "text",
+        content:
+          "C) Monitor crop health, detect early drought, forecast yield loss",
+      },
+      { type: "text", content: "D) Predict hurricane track and intensity" },
     ],
     correctIndex: 2,
     points: 20,
-    correctMessage: 'Correct! These indices help monitor crops and forecast impacts.',
-    wrongMessage: 'Hint: It\'s about monitoring crops and forecasting yield loss.'
+    correctMessage:
+      "Correct! These indices help monitor crops and forecast impacts.",
+    wrongMessage:
+      "Hint: It's about monitoring crops and forecasting yield loss.",
   },
-  { type: 'message', text: 'Great job! You\'ve completed the drought monitoring quiz.' }
+  {
+    type: "message",
+    text: "Great job! You've completed the drought monitoring quiz.",
+  },
 ];
 
 let messageIdCounter = 0;
@@ -141,77 +190,90 @@ function scrollToBottom() {
 }
 
 function handleCorrectAnswer(quizId, correctMessage, points) {
-  console.log('✅ Correct answer!');
+  console.log("✅ Correct answer!");
   hasActiveQuiz.value = false;
-  
+
   try {
     const currentKey = `currentPoints_level${LEVEL_ID}`;
-    const currentPoints = parseInt(sessionStorage.getItem(currentKey) || '0');
+    const currentPoints = parseInt(sessionStorage.getItem(currentKey) || "0");
     const newPoints = currentPoints + points;
     sessionStorage.setItem(currentKey, newPoints.toString());
-    console.log(`🎯 Level ${LEVEL_ID}: Added ${points} points! Current: ${newPoints}`);
-    
-    const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}');
+    console.log(
+      `🎯 Level ${LEVEL_ID}: Added ${points} points! Current: ${newPoints}`
+    );
+
+    const levelsProgress = JSON.parse(
+      localStorage.getItem("levelsProgress") || "{}"
+    );
     const levelKey = `level${LEVEL_ID}`;
-    
+
     if (!levelsProgress[levelKey]) {
       levelsProgress[levelKey] = { maxPoint: 100, currentPoint: null };
     }
-    
+
     const bestScore = levelsProgress[levelKey].currentPoint || 0;
     if (newPoints > bestScore) {
       levelsProgress[levelKey].currentPoint = newPoints;
-      localStorage.setItem('levelsProgress', JSON.stringify(levelsProgress));
+      localStorage.setItem("levelsProgress", JSON.stringify(levelsProgress));
       console.log(`🏆 Level ${LEVEL_ID}: New best score: ${newPoints}!`);
     }
-    
-    window.dispatchEvent(new CustomEvent('points-updated', { detail: { levelId: LEVEL_ID } }));
+
+    window.dispatchEvent(
+      new CustomEvent("points-updated", { detail: { levelId: LEVEL_ID } })
+    );
   } catch (error) {
-    console.error('Error saving points:', error);
+    console.error("Error saving points:", error);
   }
-  
+
   replaceQuizWithMessage(quizId, correctMessage);
 }
 
 function handleWrongAnswer(quizId, wrongMessage) {
-  console.log('❌ Wrong answer!');
+  console.log("❌ Wrong answer!");
   hasActiveQuiz.value = false;
   replaceQuizWithMessage(quizId, wrongMessage);
 }
 
 function replaceQuizWithMessage(quizId, messageText) {
   setTimeout(() => {
-    const index = shownMessages.value.findIndex(msg => msg.id === quizId);
+    const index = shownMessages.value.findIndex((msg) => msg.id === quizId);
     if (index !== -1) {
-      shownMessages.value[index] = { id: quizId, type: 'message', text: messageText };
+      shownMessages.value[index] = {
+        id: quizId,
+        type: "message",
+        text: messageText,
+      };
     }
   }, 1500);
 }
 
 function handleKeydown(e) {
-  if (e.key === 'Enter') {
+  if (e.key === "Enter") {
     if (hasActiveQuiz.value) {
-      console.log('⚠️ Please answer the quiz before continuing');
+      console.log("⚠️ Please answer the quiz before continuing");
       return;
     }
-    
+
     if (currentIndex.value < messageTexts.length) {
       if (shownMessages.value.length >= 4) {
         shownMessages.value.shift();
       }
-      
-      const nextMessage = { id: messageIdCounter++, ...messageTexts[currentIndex.value] };
+
+      const nextMessage = {
+        id: messageIdCounter++,
+        ...messageTexts[currentIndex.value],
+      };
       shownMessages.value.push(nextMessage);
       currentIndex.value += 1;
-      
-      if (nextMessage.type === 'quiz') {
+
+      if (nextMessage.type === "quiz") {
         hasActiveQuiz.value = true;
       }
-      
+
       if (currentIndex.value === messageTexts.length) {
         markLevelCompleted();
       }
-      
+
       nextTick().then(scrollToBottom);
     }
   }
@@ -219,28 +281,30 @@ function handleKeydown(e) {
 
 function markLevelCompleted() {
   try {
-    const levelsCompleted = JSON.parse(localStorage.getItem('levelsCompleted') || '[]');
+    const levelsCompleted = JSON.parse(
+      localStorage.getItem("levelsCompleted") || "[]"
+    );
     if (!levelsCompleted.includes(LEVEL_ID)) {
       levelsCompleted.push(LEVEL_ID);
-      localStorage.setItem('levelsCompleted', JSON.stringify(levelsCompleted));
+      localStorage.setItem("levelsCompleted", JSON.stringify(levelsCompleted));
       console.log(`✅ Level ${LEVEL_ID} completed and saved!`);
     }
-    sessionStorage.setItem('allowLevelNav', Date.now().toString());
+    sessionStorage.setItem("allowLevelNav", Date.now().toString());
     setTimeout(() => {
       router.push(`/level${LEVEL_ID + 1}`);
     }, 1000);
   } catch (error) {
-    console.error('Error saving level completion:', error);
+    console.error("Error saving level completion:", error);
   }
 }
 
 onMounted(() => {
-  window.addEventListener('keydown', handleKeydown);
+  window.addEventListener("keydown", handleKeydown);
   nextTick().then(scrollToBottom);
 });
 
 onBeforeUnmount(() => {
-  window.removeEventListener('keydown', handleKeydown);
+  window.removeEventListener("keydown", handleKeydown);
 });
 
 watch(shownMessages, async () => {
@@ -291,20 +355,34 @@ watch(shownMessages, async () => {
 }
 
 .chat-list::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, rgba(74, 158, 255, 0.6), rgba(106, 179, 255, 0.8));
+  background: linear-gradient(
+    180deg,
+    rgba(74, 158, 255, 0.6),
+    rgba(106, 179, 255, 0.8)
+  );
   border-radius: 10px;
   border: 1px solid rgba(74, 158, 255, 0.3);
-  box-shadow: 0 0 10px rgba(74, 158, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 10px rgba(74, 158, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
 }
 
 .chat-list::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, rgba(74, 158, 255, 0.8), rgba(106, 179, 255, 1));
-  box-shadow: 0 0 15px rgba(74, 158, 255, 0.7), 0 0 25px rgba(74, 158, 255, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  background: linear-gradient(
+    180deg,
+    rgba(74, 158, 255, 0.8),
+    rgba(106, 179, 255, 1)
+  );
+  box-shadow: 0 0 15px rgba(74, 158, 255, 0.7), 0 0 25px rgba(74, 158, 255, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
 }
 
 .chat-list::-webkit-scrollbar-thumb:active {
-  background: linear-gradient(180deg, rgba(106, 179, 255, 1), rgba(74, 158, 255, 0.9));
+  background: linear-gradient(
+    180deg,
+    rgba(106, 179, 255, 1),
+    rgba(74, 158, 255, 0.9)
+  );
 }
 
 .chat-list :deep(.message-container) {
@@ -366,7 +444,8 @@ watch(shownMessages, async () => {
 }
 
 @keyframes hint-pulse {
-  0%, 100% {
+  0%,
+  100% {
     opacity: 0.7;
     transform: scale(1);
   }
@@ -374,5 +453,56 @@ watch(shownMessages, async () => {
     opacity: 1;
     transform: scale(1.03);
   }
+}
+
+/* Image container with link (same as Level 1) */
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-link-container {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.image-link {
+  display: inline-block;
+  color: #ffd700;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 10px 20px;
+  background: rgba(10, 15, 30, 0.85);
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.image-link:hover {
+  color: #fff;
+  background: rgba(255, 215, 0, 0.2);
+  border-color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.image-link:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 </style>

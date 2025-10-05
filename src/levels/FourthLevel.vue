@@ -1,10 +1,21 @@
 <template>
   <LevelLayout :levelId="4">
-    <img
-      src="@/assets/images/s/winter.jpg"
-      alt="fourth-level"
-      class="level-image"
-    />
+    <div class="image-container">
+      <img
+        src="@/assets/images/s/winter.jpg"
+        alt="fourth-level"
+        class="level-image"
+      />
+      <div class="image-link-container">
+        <a
+          href="https://smap.jpl.nasa.gov/"
+          target="_blank"
+          class="image-link"
+        >
+          SMAP website
+        </a>
+      </div>
+    </div>
 
     <template #chat>
       <div class="chat-content">
@@ -364,6 +375,54 @@ watch(shownMessages, async () => {
   animation: hint-pulse 2s ease-in-out infinite;
   pointer-events: none;
   z-index: 10;
+}
+
+/* Image container with link (same as Level 1) */
+.image-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-link-container {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+.image-link {
+  display: inline-block;
+  color: #ffd700;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  padding: 10px 20px;
+  background: rgba(10, 15, 30, 0.85);
+  border: 2px solid #ffd700;
+  border-radius: 8px;
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.image-link:hover {
+  color: #fff;
+  background: rgba(255, 215, 0, 0.2);
+  border-color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5), 0 0 30px rgba(255, 215, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.image-link:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 10px rgba(255, 215, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 @keyframes hint-pulse {
