@@ -58,6 +58,10 @@ import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+
+// Set page title
+document.title = "Polar Lights Yield - Level 8";
+
 const LEVEL_ID = 8;
 
 const messageTexts = [

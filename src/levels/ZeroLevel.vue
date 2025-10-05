@@ -31,6 +31,9 @@ import Message from '@/components/Message.vue'
 import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 
+// Set page title
+document.title = "Welcome - Meet Sem";
+
 // Import images
 import moskot from '@/assets/images/moskot/moskot.png'
 import moskot1 from '@/assets/images/moskot/moskot1.png'

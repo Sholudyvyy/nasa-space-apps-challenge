@@ -58,6 +58,10 @@ import { ref, onMounted, onBeforeUnmount, watch, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+
+// Set page title
+document.title = "Cryo Storage - Level 7";
+
 const LEVEL_ID = 7;
 
 const messageTexts = [

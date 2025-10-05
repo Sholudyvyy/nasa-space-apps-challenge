@@ -74,6 +74,9 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
+// Set page title
+document.title = "Orbital Sowing - Level 1";
+
 // Level ID for this level
 const LEVEL_ID = 1;
 
@@ -316,7 +319,7 @@ watch(shownMessages, async () => {
 });
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 .first-level__image {
   width: 100%;
   height: 100%;
