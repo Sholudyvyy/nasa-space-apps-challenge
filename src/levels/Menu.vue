@@ -135,6 +135,17 @@ $bg-color: #000;
   font-family: sans-serif;
   transform: rotate(12deg);
   z-index: 2;
+  animation: pulse-title 2s ease-in-out infinite;
+}
+
+@keyframes pulse-title {
+  0%,
+  100% {
+    transform: rotate(12deg) scale(1);
+  }
+  50% {
+    transform: rotate(12deg) scale(1.1);
+  }
 }
 
 .menu-buttons {
