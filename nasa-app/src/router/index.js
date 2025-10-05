@@ -9,19 +9,20 @@ import SixthLevel from '../levels/SixthLevel.vue'
 import SeventhLevel from '../levels/SeventhLevel.vue'
 import EighthLevel from '../levels/EighthLevel.vue'
 import NotFound from '../components/NotFound.vue'
+import ZeroLevel from '../levels/ZeroLevel.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
       path: '/',
-      name: 'Level0',
-      component: Level0
+      name: 'ZeroLevel',
+      component: ZeroLevel
     },
     {
       path: '/level0',
-      name: 'Level0',
-      component: Level0
+      name: 'ZeroLevel',
+      component: ZeroLevel
     },
     {
       path: '/level1',
