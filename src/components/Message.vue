@@ -13,7 +13,9 @@
 </template>
 
 <script setup>
-import { defineProps, ref, onMounted, watch } from 'vue'
+import { defineProps, defineEmits, ref, onMounted, watch } from 'vue'
+
+const emit = defineEmits(['typingComplete'])
 
 const props = defineProps({
   text: {
@@ -56,6 +58,7 @@ const typeText = async (text) => {
   // Keep cursor visible for a moment after typing is complete
   setTimeout(() => {
     isTyping.value = false
+    emit('typingComplete')
   }, 1000)
 }
 
