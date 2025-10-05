@@ -56,10 +56,10 @@ const messageTexts = [
     type: 'quiz',
     question: 'Q1. Which NASA sensor on Terra & Aqua provides Land Surface Reflectance and LST for many drought indices?',
     variants: [
-      { type: 'text', content: 'A) Landsat Thematic Mapper (TM)' },
-      { type: 'text', content: 'B) Gravity Recovery and Climate Experiment (GRACE)' },
-      { type: 'text', content: 'C) Moderate Resolution Imaging Spectroradiometer (MODIS)' },
-      { type: 'text', content: 'D) Global Precipitation Measurement (GPM)' }
+      { type: 'text', content: 'Landsat Thematic Mapper (TM)' },
+      { type: 'text', content: 'Gravity Recovery and Climate Experiment (GRACE)' },
+      { type: 'text', content: 'Moderate Resolution Imaging Spectroradiometer (MODIS)' },
+      { type: 'text', content: 'Global Precipitation Measurement (GPM)' }
     ],
     correctIndex: 2,
     points: 20,
@@ -70,10 +70,10 @@ const messageTexts = [
     type: 'quiz',
     question: 'Q2. Which composite index is widely used for ag. drought monitoring and predicting crop yield loss (combining vegetation health and thermal stress)?',
     variants: [
-      { type: 'text', content: 'A) Vegetation Health Index (VHI)' },
-      { type: 'text', content: 'B) Standardized Precipitation Index (SPI)' },
-      { type: 'text', content: 'C) Normalized Difference Vegetation Index (NDVI)' },
-      { type: 'text', content: 'D) Normalized Difference Water Index (NDWI)' }
+      { type: 'text', content: 'Vegetation Health Index (VHI)' },
+      { type: 'text', content: 'Standardized Precipitation Index (SPI)' },
+      { type: 'text', content: 'Normalized Difference Vegetation Index (NDVI)' },
+      { type: 'text', content: 'Normalized Difference Water Index (NDWI)' }
     ],
     correctIndex: 0,
     points: 20,
@@ -84,10 +84,10 @@ const messageTexts = [
     type: 'quiz',
     question: 'Q3. VHI combines two components. Which assesses the relative “greenness” by comparing current to historical min/max?',
     variants: [
-      { type: 'text', content: 'A) Temperature Condition Index (TCI)' },
-      { type: 'text', content: 'B) Vegetation Condition Index (VCI)' },
-      { type: 'text', content: 'C) Land Surface Temperature (LST)' },
-      { type: 'text', content: 'D) Normalized Difference Drought Index (NDDI)' }
+      { type: 'text', content: 'Temperature Condition Index (TCI)' },
+      { type: 'text', content: 'Vegetation Condition Index (VCI)' },
+      { type: 'text', content: 'Land Surface Temperature (LST)' },
+      { type: 'text', content: 'Normalized Difference Drought Index (NDDI)' }
     ],
     correctIndex: 1,
     points: 20,
@@ -98,10 +98,10 @@ const messageTexts = [
     type: 'quiz',
     question: 'Q4. NDVI is computed from red and NIR reflectance. A value near +1.0 typically indicates…',
     variants: [
-      { type: 'text', content: 'A) Bare soil or open water' },
-      { type: 'text', content: 'B) Low water content in canopy (water stress)' },
-      { type: 'text', content: 'C) Severe drought and poor vegetation health' },
-      { type: 'text', content: 'D) Dense and healthy vegetation cover' }
+      { type: 'text', content: 'Bare soil or open water' },
+      { type: 'text', content: 'Low water content in canopy (water stress)' },
+      { type: 'text', content: 'Severe drought and poor vegetation health' },
+      { type: 'text', content: 'Dense and healthy vegetation cover' }
     ],
     correctIndex: 3,
     points: 20,
@@ -112,10 +112,10 @@ const messageTexts = [
     type: 'quiz',
     question: 'Q5. What is the primary goal of indices like VHI, NDWI, and VCI in ag. monitoring (e.g., FEWS NET, GEO GLAM)?',
     variants: [
-      { type: 'text', content: 'A) Track glaciers and polar ice caps' },
-      { type: 'text', content: 'B) Measure atmospheric CO2 concentration' },
-      { type: 'text', content: 'C) Monitor crop health, detect early drought, forecast yield loss' },
-      { type: 'text', content: 'D) Predict hurricane track and intensity' }
+      { type: 'text', content: 'Track glaciers and polar ice caps' },
+      { type: 'text', content: 'Measure atmospheric CO2 concentration' },
+      { type: 'text', content: 'Monitor crop health, detect early drought, forecast yield loss' },
+      { type: 'text', content: 'Predict hurricane track and intensity' }
     ],
     correctIndex: 2,
     points: 20,
