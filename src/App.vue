@@ -1,11 +1,14 @@
 <template>
   <div id="app">
     <div class="stars"></div>
+    <LevelSelector />
     <router-view></router-view>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import LevelSelector from './components/LevelSelector.vue'
+</script>
 
 <style lang="scss">
 // Variables
