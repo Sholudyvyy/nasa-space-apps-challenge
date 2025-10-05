@@ -72,7 +72,7 @@ document.title = "Nebula Sorting - Level 5";
 const LEVEL_ID = 5;
 
 const messageTexts = [
-  { type: 'message', text: 'Level 5 — Weekly Vegetation Monitoring & Yield Forecasting 📈🌿' },
+  { type: 'message', text: 'Weekly Vegetation Monitoring & Yield Forecasting 📈🌿' },
   { type: 'message', text: 'Answer the following questions about MODIS/VIIRS weekly monitoring, NDWI/NDVI, and VHI components.' },
   {
     type: 'quiz',

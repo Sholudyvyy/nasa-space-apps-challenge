@@ -70,7 +70,7 @@ const LEVEL_ID = 3;
 const messageTexts = [
   {
     type: "message",
-    text: "Level 3 — Satellite-Based Drought Monitoring for Crop Loss Forecasting 🌾🛰️",
+    text: "Satellite-Based Drought Monitoring for Crop Loss Forecasting 🌾🛰️",
   },
   {
     type: "message",

@@ -65,7 +65,7 @@ document.title = "Polar Lights Yield - Level 8";
 const LEVEL_ID = 8;
 
 const messageTexts = [
-  { type: "message", text: "Level 8: The Final Challenge! 🏆" },
+  { type: "message", text: "The Final Challenge! 🏆" },
   {
     type: "quiz",
     question:
