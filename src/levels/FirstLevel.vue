@@ -112,10 +112,6 @@ const messageTexts = [
     wrongMessage: "Almost right! Try again.",
   },
   {
-    type: "message",
-    text: "The Message component prints text with an effect.",
-  },
-  {
     type: "quiz",
     question:
       "According to the description of the SMAP core product, what two key soil characteristics does this satellite measure?",
@@ -183,6 +179,7 @@ function scrollToBottom() {
 }
 
 function handleCorrectAnswer(quizId, correctMessage, points) {
+  console.log("✅ Correct answer!");
   hasActiveQuiz.value = false; // Allow Enter key again
 
   // Add points to session score for this level
@@ -192,6 +189,9 @@ function handleCorrectAnswer(quizId, correctMessage, points) {
     const currentPoints = parseInt(sessionStorage.getItem(currentKey) || "0");
     const newPoints = currentPoints + points;
     sessionStorage.setItem(currentKey, newPoints.toString());
+    console.log(
+      `🎯 Level ${LEVEL_ID}: Added ${points} points! Current: ${newPoints}`
+    );
 
     // Check if current score beats best score for this level in levelsProgress
     const levelsProgress = JSON.parse(
@@ -207,6 +207,7 @@ function handleCorrectAnswer(quizId, correctMessage, points) {
     if (newPoints > bestScore) {
       levelsProgress[levelKey].currentPoint = newPoints;
       localStorage.setItem("levelsProgress", JSON.stringify(levelsProgress));
+      console.log(`🏆 Level ${LEVEL_ID}: New best score: ${newPoints}!`);
     }
 
     // Dispatch custom event to notify points counter with level ID
@@ -216,12 +217,14 @@ function handleCorrectAnswer(quizId, correctMessage, points) {
       })
     );
   } catch (error) {
+    console.error("Error saving points:", error);
   }
 
   replaceQuizWithMessage(quizId, correctMessage);
 }
 
 function handleWrongAnswer(quizId, wrongMessage) {
+  console.log("❌ Wrong answer!");
   hasActiveQuiz.value = false; // Allow Enter key again
   replaceQuizWithMessage(quizId, wrongMessage);
 }
@@ -245,6 +248,7 @@ function handleKeydown(e) {
   if (e.key === "Enter") {
     // Prevent Enter if there's an active quiz
     if (hasActiveQuiz.value) {
+      console.log("⚠️ Please answer the quiz before continuing");
       return;
     }
 
@@ -289,6 +293,7 @@ function markLevelCompleted() {
     if (!levelsCompleted.includes(1)) {
       levelsCompleted.push(1);
       localStorage.setItem("levelsCompleted", JSON.stringify(levelsCompleted));
+      console.log("✅ Level 1 completed and saved!");
     }
 
     // Set token to allow navigation to next level
@@ -299,6 +304,7 @@ function markLevelCompleted() {
       router.push("/level2");
     }, 1000);
   } catch (error) {
+    console.error("Error saving level completion:", error);
   }
 }
 

@@ -7,8 +7,8 @@
         class="level-image"
       />
       <div class="image-link-container">
-        <a href="https://smap.jpl.nasa.gov/" target="_blank" class="image-link">
-          SMAP website
+        <a href="https://power.larc.nasa.gov/" target="_blank" class="image-link">
+          NASA POWER website
         </a>
       </div>
     </div>
@@ -67,23 +67,65 @@ const LEVEL_ID = 2;
 
 // Message data
 const messageTexts = [
-  { type: "message", text: "Welcome to Level 2! Summer vibes 🌞" },
-  { type: "message", text: "This level tests your knowledge about summer." },
+  { type: "message", text: "For better crop forecasting, let's take a look at the source from Nasa." },
+  { type: "message", text: "Let's test your knowledge on this topic." },
   {
     type: "quiz",
-    question: "What season is shown in the image?",
+    question: " Which of these instruments, installed on NASA's Terra and Aqua satellites, provides daily images of Earth, allowing for rapid detection of temperature anomalies and changes in vegetation?",
     variants: [
-      { type: "text", content: "Spring" },
-      { type: "text", content: "Summer" },
-      { type: "text", content: "Fall" },
-      { type: "text", content: "Winter" },
+      { type: "text", content: "SRTM" },
+      { type: "text", content: "Landsat" },
+      { type: "text", content: "MODIS" },
+      { type: "text", content: "SMAP" },
+    ],
+    correctIndex: 2,
+    points: 10,
+    correctMessage: "Mission Control Confirms!",
+    wrongMessage: "Incorrect Input.",
+  },
+  {
+    type: "quiz",
+    question: "Go to the NASA platform, which provides historical climate data for planning (for example, search for “NASA POWER”). Enter the coordinates or select any point on the map.",
+    variants: [
+      { type: "text", content: "Wind speed" },
+      { type: "text", content: "Average daily air temperature" },
+      { type: "text", content: "Pressure at sea level" },
+      { type: "text", content: "Snow cover" },
     ],
     correctIndex: 1,
-    points: 20,
-    correctMessage: "Correct! It's Summer! ☀️",
-    wrongMessage: "Not quite! Try again!",
+    points: 10,
+    correctMessage: "Outstanding! 🎉",
+    wrongMessage: "Data is Misleading! 😬",
   },
-  { type: "message", text: "Great job completing this level!" },
+  {
+    type: "quiz",
+    question: "Which two types of data provided by NASA satellites are critical for assessing soil depletion risk and ensuring a successful start to the season?",
+    variants: [
+      { type: "text", content: "Cloud cover and tectonic plate movement." },
+      { type: "text", content: "Soil moisture level (SMAP) and previous season's vegetation index (NDVI)." },
+      { type: "text", content: "Ocean surface temperature and CO₂ levels." },
+      { type: "text", content: "Moonlight and atmospheric pressure." },
+    ],
+    correctIndex: 1,
+    points: 15,
+    correctMessage: "Phenomenal Find!",
+    wrongMessage: "Almost right! Try again.",
+  },
+  {
+    type: "quiz",
+    question: "When analyzing a field for crop selection on a Landsat image, dark green color in summer may indicate a high NDVI index. What exactly does this high NDVI concentration indicate about the soil's potential?",
+    variants: [
+      { type: "text", content: "The soil has high acidity." },
+      { type: "text", content: "The soil is frozen." },
+      { type: "text", content: "The soil is highly fertile and capable of supporting healthy vegetation." },
+      { type: "text", content: "The soil consists entirely of sand." },
+    ],
+    correctIndex: 2,
+    points: 20,
+    correctMessage: "You are right!",
+    wrongMessage: "You almost succeeded!",
+  },
+  { type: "message", text: "Mission Accomplished! 🚀 You've unlocked the next challenge." },
 ];
 
 let messageIdCounter = 0;
