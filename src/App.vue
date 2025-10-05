@@ -128,7 +128,6 @@ const toggleMute = () => {
 };
 
 const handleOpenLevelSelector = () => {
-  console.log("Opening level selector");
   showLevelSelector.value = true;
 };
 
@@ -152,12 +151,9 @@ const initializeLevelsProgress = () => {
       };
       
       localStorage.setItem('levelsProgress', JSON.stringify(levelsProgress));
-      console.log('✅ Levels progress initialized');
     } else {
-      console.log('✅ Levels progress already exists');
     }
   } catch (error) {
-    console.error('Error initializing levels progress:', error);
   }
 };
 
