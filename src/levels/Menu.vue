@@ -111,8 +111,11 @@ const y = ref(0);
 const frames = [moskot1, moskot2, moskot3, moskot4, moskot5, moskot];
 const currentIdx = ref(0);
 const currentSrc = computed(() => frames[currentIdx.value]);
-let dx = Math.random() > 0.5 ? 2 : -2;
-let dy = Math.random() > 0.5 ? 2 : -2;
+
+// Lower speed so the astronaut moves slower
+const SPEED = 0.6;
+let dx = (Math.random() > 0.5 ? 1 : -1) * SPEED;
+let dy = (Math.random() > 0.5 ? 1 : -1) * SPEED;
 let frameId;
 
 const router = useRouter();
