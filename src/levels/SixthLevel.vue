@@ -1,5 +1,5 @@
 <template>
-  <LevelLayout>
+  <LevelLayout :levelId="6">
     <div>
       <h1>Level 6: Jupiter's Moons Expedition</h1>
       <div class="level-info">

@@ -1,5 +1,5 @@
 <template>
-  <LevelLayout>
+  <LevelLayout :levelId="2">
     <div>
       <h1>Level 2: Space Station Operations</h1>
       <div class="level-info">

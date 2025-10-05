@@ -1,5 +1,5 @@
 <template>
-  <LevelLayout>
+  <LevelLayout :levelId="5">
     <div>
       <h1>Level 5: Asteroid Mining Operation</h1>
       <div class="level-info">
