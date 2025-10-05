@@ -8,11 +8,18 @@
       />
       <div class="image-link-container">
         <a
-          href="https://smap.jpl.nasa.gov/"
+          href="https://ladsweb.modaps.eosdis.nasa.gov/missions-and-measurements/modis/"
           target="_blank"
           class="image-link"
         >
-          SMAP website
+          MODIS website
+        </a>
+        <a
+          href="https://www.earthdata.nasa.gov/data/instruments/viirs"
+          target="_blank"
+          class="image-link"
+        >
+          VIIRS website
         </a>
       </div>
     </div>
@@ -65,23 +72,65 @@ document.title = "Nebula Sorting - Level 5";
 const LEVEL_ID = 5;
 
 const messageTexts = [
-  { type: 'message', text: 'Level 5: Advanced Challenge! 🚀' },
-  { type: 'message', text: 'Let\'s test your skills!' },
-  { 
+  { type: 'message', text: 'Level 5 — Weekly Vegetation Monitoring & Yield Forecasting 📈🌿' },
+  { type: 'message', text: 'Answer the following questions about MODIS/VIIRS weekly monitoring, NDWI/NDVI, and VHI components.' },
+  {
     type: 'quiz',
-    question: 'Identify the season:',
+    question: 'What\'s the main advantage of weekly (vs monthly) MODIS/VIIRS monitoring for yield forecasting?',
     variants: [
-      { type: 'text', content: 'Spring' },
-      { type: 'text', content: 'Summer' },
-      { type: 'text', content: 'Fall' },
-      { type: 'text', content: 'Winter' }
+      { type: 'text', content: 'It allows for better soil type classification across large regions.' },
+      { type: 'text', content: 'It is primarily used for tracking the global movement of dust storms.' },
+      { type: 'text', content: 'It enables early detection of short-term stress events (flash droughts/heat waves).' },
+      { type: 'text', content: 'It provides a direct measure of average annual rainfall for the whole season.' }
+    ],
+    correctIndex: 2,
+    points: 15,
+    correctMessage: 'Correct! Weekly cadence captures short-term stress that impacts crops fast.',
+    wrongMessage: 'Not quite. Weekly data helps detect rapid stress events early.'
+  },
+  {
+    type: 'quiz',
+    question: 'Unlike NDVI (greenness), what does NDWI primarily assess for early drought detection?',
+    variants: [
+      { type: 'text', content: 'The total surface area covered by clouds.' },
+      { type: 'text', content: 'The concentration of nitrogen in leaf tissue.' },
+      { type: 'text', content: 'The amount of solar radiation absorbed by the canopy.' },
+      { type: 'text', content: 'The water content within plant tissues (leaves).' }
+    ],
+    correctIndex: 3,
+    points: 20,
+    correctMessage: 'Correct! NDWI is sensitive to leaf/canopy water content.',
+    wrongMessage: 'Hint: NDWI targets plant water content rather than greenness.'
+  },
+  {
+    type: 'quiz',
+    question: 'In VHI, a high Temperature Condition Index (TCI) indicates…',
+    variants: [
+      { type: 'text', content: 'Favorable thermal conditions and low heat stress.' },
+      { type: 'text', content: 'Severe water stress causing transpiration shutdown.' },
+      { type: 'text', content: 'The highest LST recorded for the region.' },
+      { type: 'text', content: 'The crop has reached peak maturity and harvest readiness.' }
     ],
     correctIndex: 0,
-    points: 35,
-    correctMessage: 'Brilliant! Spring it is! 🌸',
-    wrongMessage: 'Almost! Try again!'
+    points: 20,
+    correctMessage: 'Correct! High TCI = lower thermal stress, favorable conditions.',
+    wrongMessage: 'Close. High TCI means low heat stress.'
   },
-  { type: 'message', text: 'Excellent progress! Keep going!' }
+  {
+    type: 'quiz',
+    question: 'Comparing seasonal NDVI to a 20-year average mainly provides what insight?',
+    variants: [
+      { type: 'text', content: 'The exact number of days the crop was visible above ground.' },
+      { type: 'text', content: 'The final market price of the commodity.' },
+      { type: 'text', content: 'It quantifies current-season vegetation stress (anomaly) linked to potential yield loss.' },
+      { type: 'text', content: 'Helps identify the need for chemical fertilizer application.' }
+    ],
+    correctIndex: 2,
+    points: 25,
+    correctMessage: 'Correct! NDVI anomaly vs history correlates with yield impacts.',
+    wrongMessage: 'Think anomaly vs historical baseline to assess yield risk.'
+  },
+  { type: 'message', text: 'Great work! You\'ve completed Level 5.' }
 ];
 
 let messageIdCounter = 0;
