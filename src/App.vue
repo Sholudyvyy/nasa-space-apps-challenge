@@ -2,6 +2,8 @@
   <div id="app">
     <div class="stars" :class="{ hyperspace: isHyperspace }"></div>
 
+    <LevelSelector />
+
     <!-- Settings button -->
     <button
       v-if="!showSettings"
@@ -60,6 +62,7 @@
 </template>
 
 <script setup>
+import LevelSelector from './components/LevelSelector.vue'
 import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const isHyperspace = ref(false);

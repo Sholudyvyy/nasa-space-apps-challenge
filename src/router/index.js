@@ -10,6 +10,7 @@ import SixthLevel from '../levels/SixthLevel.vue'
 import SeventhLevel from '../levels/SeventhLevel.vue'
 import EighthLevel from '../levels/EighthLevel.vue'
 import NotFound from '../components/NotFound.vue'
+import SeasonsLevels from '../components/SeasonsLevels.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -63,6 +64,11 @@ const router = createRouter({
       path: '/level8',
       name: 'EighthLevel',
       component: EighthLevel
+    },
+    {
+      path: '/levels',
+      name: 'Levels',
+      component: SeasonsLevels
     },
     {
       path: '/:pathMatch(.*)*',
