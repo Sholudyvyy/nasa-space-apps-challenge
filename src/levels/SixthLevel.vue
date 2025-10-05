@@ -58,6 +58,10 @@ import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+
+// Set page title
+document.title = "Asteroid Thresher - Level 6";
+
 const LEVEL_ID = 6;
 
 const messageTexts = [

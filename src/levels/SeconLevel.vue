@@ -59,6 +59,9 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 
+// Set page title
+document.title = "Ion Harvest - Level 2";
+
 // Level ID for this level
 const LEVEL_ID = 2;
 

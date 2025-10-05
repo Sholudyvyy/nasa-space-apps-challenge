@@ -8,11 +8,11 @@
       />
       <div class="image-link-container">
         <a
-          href="https://smap.jpl.nasa.gov/"
+          href="https://landsat.gsfc.nasa.gov/"
           target="_blank"
           class="image-link"
         >
-          SMAP website
+          Landsat Science website
         </a>
       </div>
     </div>
@@ -58,26 +58,14 @@ import { ref, onMounted, onBeforeUnmount, watch, nextTick } from 'vue';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+
+// Set page title
+document.title = "Comet Fertilizer - Level 4";
+
 const LEVEL_ID = 4;
 
 const messageTexts = [
-  { type: 'message', text: 'Welcome to Level 4! Winter wonderland ❄️' },
-  { type: 'message', text: 'Can you identify the winter season?' },
-  { 
-    type: 'quiz',
-    question: 'What season is shown?',
-    variants: [
-      { type: 'text', content: 'Spring' },
-      { type: 'text', content: 'Summer' },
-      { type: 'text', content: 'Fall' },
-      { type: 'text', content: 'Winter' }
-    ],
-    correctIndex: 3,
-    points: 30,
-    correctMessage: 'Perfect! It\'s Winter! ⛄',
-    wrongMessage: 'Try again! Look for snow and cold!'
-  },
-  { type: 'message', text: 'Great! Let\'s dive deeper into spectroscopy for crops.' },
+  { type: 'message', text: 'Spectral Analysis of Vegetation and Remote Sensing' },
   {
     type: 'quiz',
     question: '1) Which spectral range on satellite images is the most sensitive to a decrease in chlorophyll concentration in plants (indicator of disease or stress)?',
@@ -88,7 +76,7 @@ const messageTexts = [
       { type: 'text', content: 'Visible Green range' }
     ],
     correctIndex: 0,
-    points: 25,
+    points: 10,
     correctMessage: 'Correct! NIR is most sensitive to chlorophyll decrease.',
     wrongMessage: 'Not quite. The correct answer is Near-Infrared (NIR).'
   },
@@ -102,7 +90,7 @@ const messageTexts = [
       { type: 'text', content: 'Internal leaf cell structure (mesophyll)' }
     ],
     correctIndex: 3,
-    points: 25,
+    points: 15,
     correctMessage: 'Correct! The internal leaf mesophyll drives high NIR reflectance.',
     wrongMessage: 'Not quite. It is mainly the mesophyll (internal cell structure).'
   },
@@ -116,7 +104,7 @@ const messageTexts = [
       { type: 'text', content: 'GeoEye and WorldView' }
     ],
     correctIndex: 0,
-    points: 25,
+    points: 10,
     correctMessage: 'Correct! Landsat and Sentinel-2 are widely used for vegetation spectra.',
     wrongMessage: 'Not quite. The correct pair is Landsat and Sentinel-2.'
   },
@@ -130,7 +118,7 @@ const messageTexts = [
       { type: 'text', content: 'Visible Green' }
     ],
     correctIndex: 2,
-    points: 25,
+    points: 20,
     correctMessage: 'Correct! Chlorophyll strongly absorbs in the red range.',
     wrongMessage: 'Not quite. Healthy plants absorb most strongly in the visible red.'
   },
