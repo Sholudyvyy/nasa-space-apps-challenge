@@ -21,6 +21,7 @@
                 <h3 class="title">{{ challenge.title }}</h3>
               </div>
               <p class="desc">{{ challenge.description }}</p>
+              <div class="score">Score: <strong>{{ getBestScore(challenge.level) }}</strong></div>
               <div class="actions">
                 <button
                   v-if="season.unlocked"
@@ -50,32 +51,32 @@ const seasonsRaw = [
     id: 1,
     title: 'Season 1 — Spring',
     challenges: [
-      { level: 1, title: 'Orbital Sowing', description: 'Plant seeds on a low-orbit farm ring.', image: img, route: '/level1' },
-      { level: 2, title: 'Ion Harvest', description: 'Collect ionized dew as irrigation.', image: img, route: '/level2' },
+      { level: 1, title: 'Orbital Sowing', description: 'Plant seeds on a low-orbit farm ring.', image: img, route: '/level1', score: 100 },
+      { level: 2, title: 'Ion Harvest', description: 'Collect ionized dew as irrigation.', image: img, route: '/level2', score: 120 },
     ]
   },
   {
     id: 2,
     title: 'Season 2 — Summer',
     challenges: [
-      { level: 3, title: 'Solar Reaping', description: 'Time your harvest with solar flares.', image: img, route: '/level3' },
-      { level: 4, title: 'Comet Fertilizer', description: 'Guide comet dust to enrich fields.', image: img, route: '/level4' },
+      { level: 3, title: 'Solar Reaping', description: 'Time your harvest with solar flares.', image: img, route: '/level3', score: 140 },
+      { level: 4, title: 'Comet Fertilizer', description: 'Guide comet dust to enrich fields.', image: img, route: '/level4', score: 160 },
     ]
   },
   {
     id: 3,
     title: 'Season 3 — Autumn',
     challenges: [
-      { level: 5, title: 'Nebula Sorting', description: 'Sort grains in microgravity.', image: img, route: '/level5' },
-      { level: 6, title: 'Asteroid Thresher', description: 'Use asteroid belts to thresh crops.', image: img, route: '/level6' },
+      { level: 5, title: 'Nebula Sorting', description: 'Sort grains in microgravity.', image: img, route: '/level5', score: 180 },
+      { level: 6, title: 'Asteroid Thresher', description: 'Use asteroid belts to thresh crops.', image: img, route: '/level6', score: 200 },
     ]
   },
   {
     id: 4,
     title: 'Season 4 — Winter',
     challenges: [
-      { level: 7, title: 'Cryo Storage', description: 'Store surplus in cryo bins.', image: img, route: '/level7' },
-      { level: 8, title: 'Polar Lights Yield', description: 'Boost growth with aurora energy.', image: img, route: '/level8' },
+      { level: 7, title: 'Cryo Storage', description: 'Store surplus in cryo bins.', image: img, route: '/level7', score: 220 },
+      { level: 8, title: 'Polar Lights Yield', description: 'Boost growth with aurora energy.', image: img, route: '/level8', score: 240 },
     ]
   }
 ]
@@ -116,6 +117,18 @@ function startLevel(route) {
     sessionStorage.setItem('allowLevelNav', String(Date.now()))
   } catch (_) {}
   router.push(route)
+}
+
+function getBestScore(levelNum) {
+  // If рівень ще не пройдено, показуємо 0 незалежно від наявних локальних значень
+  if (!completedSet.value.has(levelNum)) return 0
+  try {
+    const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}')
+    const key = `level${levelNum}`
+    return levelsProgress[key]?.currentPoint || 0
+  } catch (_) {
+    return 0
+  }
 }
 </script>
 
@@ -193,6 +206,7 @@ h1 { color: #e0ecff; font-weight: 800; letter-spacing: 0.5px; }
 .badge { background: #0e1220; color: #a7c4ff; border: 1px solid #2a3b6f; border-radius: 9999px; padding: 2px 8px; font-weight: 700; }
 .title { color: #e6ebff; font-weight: 800; }
 .desc { color: #9db0d8; font-size: 14px; }
+.score { color: #a7c4ff; font-size: 14px; }
 
 .actions { margin-top: 4px; }
 .play {
