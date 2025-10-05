@@ -83,10 +83,60 @@ function isLevelRoute(path) {
   return /^\/level\d+$/.test(path)
 }
 
+function getCompletedSet() {
+  try {
+    const raw = localStorage.getItem('levelsCompleted')
+    const arr = raw ? JSON.parse(raw) : []
+    return new Set(Array.isArray(arr) ? arr : [])
+  } catch (_) {
+    return new Set()
+  }
+}
+
+// Pair-based unlocking: [1,2] open by default; next pair opens only when previous pair fully completed
+function getHighestUnlockedPairEnd() {
+  // Base unlocked pair is [1,2]
+  let highestEnd = 2
+  const completed = getCompletedSet()
+  const pairStarts = [1, 3, 5, 7]
+  for (let i = 0; i < pairStarts.length; i++) {
+    const a = pairStarts[i]
+    const b = a + 1
+    if (i === 0) {
+      // first pair is unlocked by default; if both completed, we can advance
+      if (completed.has(a) && completed.has(b)) {
+        highestEnd = b
+        continue
+      } else {
+        highestEnd = 2
+        break
+      }
+    } else {
+      // subsequent pair is considered unlocked only if previous pair fully completed
+      const prevA = pairStarts[i - 1]
+      const prevB = prevA + 1
+      const prevDone = completed.has(prevA) && completed.has(prevB)
+      if (!prevDone) break
+      highestEnd = b
+      // if current pair not completed, we still stop here; it's the highest unlocked end
+      const currDone = completed.has(a) && completed.has(b)
+      if (!currDone) break
+    }
+  }
+  return highestEnd
+}
+
+function isLevelAllowedByProgress(levelNumber) {
+  if (levelNumber === 0) return true
+  const highestEnd = getHighestUnlockedPairEnd()
+  return levelNumber <= highestEnd
+}
+
 // Trigger hyperspace effect before navigating to the next level
 router.beforeEach(async (to, from) => {
   // Block direct URL entry to level routes unless explicitly allowed by a prior click
   if (isLevelRoute(to.path)) {
+    const fromIsLevel = !!from?.path && isLevelRoute(from.path)
     try {
       const tokenRaw = sessionStorage.getItem('allowLevelNav')
       const token = tokenRaw ? parseInt(tokenRaw, 10) : 0
@@ -94,9 +144,15 @@ router.beforeEach(async (to, from) => {
       const isFresh = token && now - token < 3000 // 3s validity
       // Consume token regardless to avoid reuse
       sessionStorage.removeItem('allowLevelNav')
-      if (!isFresh) {
-        // deny navigation and redirect to menu
+      // If coming from another level, allow without token; otherwise require fresh token
+      if (!fromIsLevel && !isFresh) {
         return { name: 'Menu' }
+      }
+      // Also enforce pair-based unlock based on progress
+      const match = to.path.match(/\/level(\d+)/)
+      const levelNumber = match ? parseInt(match[1], 10) : NaN
+      if (!Number.isNaN(levelNumber) && !isLevelAllowedByProgress(levelNumber)) {
+        return { name: 'Levels' }
       }
     } catch (_) {
       return { name: 'Menu' }

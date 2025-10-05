@@ -19,10 +19,103 @@
         </div>
       </aside>
     </div>
+
+    <div class="bottom-nav">
+      <button class="nav-btn" :disabled="!canGoPrev" @click="goPrev">Prev</button>
+      <div class="nav-status">Level {{ currentLevelDisplay }}</div>
+      <button class="nav-btn" :disabled="!canGoNext" @click="goNext">Next</button>
+    </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
+
+function parseCurrentLevel() {
+  const match = route.path.match(/\/level(\d+)/)
+  return match ? parseInt(match[1], 10) : NaN
+}
+
+function getCompletedSet() {
+  try {
+    const raw = localStorage.getItem('levelsCompleted')
+    const arr = raw ? JSON.parse(raw) : []
+    return new Set(Array.isArray(arr) ? arr : [])
+  } catch (_) {
+    return new Set()
+  }
+}
+
+function getHighestUnlockedPairEnd() {
+  let highestEnd = 2
+  const completed = getCompletedSet()
+  const pairStarts = [1, 3, 5, 7]
+  for (let i = 0; i < pairStarts.length; i++) {
+    const a = pairStarts[i]
+    const b = a + 1
+    if (i === 0) {
+      if (completed.has(a) && completed.has(b)) {
+        highestEnd = b
+        continue
+      } else {
+        highestEnd = 2
+        break
+      }
+    } else {
+      const prevA = pairStarts[i - 1]
+      const prevB = prevA + 1
+      const prevDone = completed.has(prevA) && completed.has(prevB)
+      if (!prevDone) break
+      highestEnd = b
+      const currDone = completed.has(a) && completed.has(b)
+      if (!currDone) break
+    }
+  }
+  return highestEnd
+}
+
+const currentLevel = computed(() => parseCurrentLevel())
+const highestEnd = computed(() => getHighestUnlockedPairEnd())
+
+const canGoPrev = computed(() => {
+  const n = currentLevel.value
+  if (!Number.isFinite(n)) return false
+  return n > 1
+})
+
+const canGoNext = computed(() => {
+  const n = currentLevel.value
+  if (!Number.isFinite(n)) return false
+  return n + 1 <= highestEnd.value
+})
+
+const currentLevelDisplay = computed(() => {
+  const n = currentLevel.value
+  return Number.isFinite(n) ? n : '-'
+})
+
+function navigateToLevel(n) {
+  if (!Number.isFinite(n)) return
+  try {
+    sessionStorage.setItem('allowLevelNav', String(Date.now()))
+  } catch (_) {}
+  router.push(`/level${n}`)
+}
+
+function goPrev() {
+  const n = currentLevel.value
+  if (Number.isFinite(n) && n > 1) navigateToLevel(n - 1)
+}
+
+function goNext() {
+  const n = currentLevel.value
+  if (Number.isFinite(n) && n + 1 <= highestEnd.value) navigateToLevel(n + 1)
+}
+</script>
 
 <style scoped>
 .level {
@@ -91,5 +184,39 @@
   padding: 40px;
   color: #aaa;
   font-size: 1rem;
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(10, 15, 30, 0.6);
+  border: 1px solid rgba(120, 160, 255, 0.25);
+  border-radius: 9999px;
+  padding: 8px 14px;
+  backdrop-filter: blur(6px);
+}
+
+.nav-btn {
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(120, 180, 255, 0.35);
+  background: #1a2a55;
+  color: #e8f3ff;
+  cursor: pointer;
+}
+
+.nav-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.nav-status {
+  color: #cfe0ff;
+  font-weight: 700;
 }
 </style>
