@@ -111,7 +111,7 @@ const messageTexts = [
       { type: "text", content: "Normalized Difference Water Index (NDWI)" },
     ],
     correctIndex: 0,
-    points: 20,
+    points: 25,
     correctMessage:
       "Correct! VHI combines vegetation and temperature conditions.",
     wrongMessage: "Try again. The composite index is VHI.",

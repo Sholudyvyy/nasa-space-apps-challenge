@@ -84,7 +84,7 @@ const messageTexts = [
       { type: 'text', content: 'It provides a direct measure of average annual rainfall for the whole season.' }
     ],
     correctIndex: 2,
-    points: 15,
+    points: 30,
     correctMessage: 'Correct! Weekly cadence captures short-term stress that impacts crops fast.',
     wrongMessage: 'Not quite. Weekly data helps detect rapid stress events early.'
   },
@@ -112,7 +112,7 @@ const messageTexts = [
       { type: 'text', content: 'The crop has reached peak maturity and harvest readiness.' }
     ],
     correctIndex: 0,
-    points: 20,
+    points: 25,
     correctMessage: 'Correct! High TCI = lower thermal stress, favorable conditions.',
     wrongMessage: 'Close. High TCI means low heat stress.'
   },

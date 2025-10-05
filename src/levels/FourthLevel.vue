@@ -76,7 +76,7 @@ const messageTexts = [
       { type: 'text', content: 'Visible Green range' }
     ],
     correctIndex: 0,
-    points: 10,
+    points: 25,
     correctMessage: 'Correct! NIR is most sensitive to chlorophyll decrease.',
     wrongMessage: 'Not quite. The correct answer is Near-Infrared (NIR).'
   },
@@ -90,7 +90,7 @@ const messageTexts = [
       { type: 'text', content: 'Internal leaf cell structure (mesophyll)' }
     ],
     correctIndex: 3,
-    points: 15,
+    points: 25,
     correctMessage: 'Correct! The internal leaf mesophyll drives high NIR reflectance.',
     wrongMessage: 'Not quite. It is mainly the mesophyll (internal cell structure).'
   },
@@ -104,7 +104,7 @@ const messageTexts = [
       { type: 'text', content: 'GeoEye and WorldView' }
     ],
     correctIndex: 0,
-    points: 10,
+    points: 30,
     correctMessage: 'Correct! Landsat and Sentinel-2 are widely used for vegetation spectra.',
     wrongMessage: 'Not quite. The correct pair is Landsat and Sentinel-2.'
   },

@@ -1,6 +1,30 @@
 <template>
   <div class="zero-level">
-    <div class="zero-level__message">
+    <!-- Slideshow Section -->
+    <div v-if="showSlideshow" class="slideshow" @click="nextSlide">
+      <transition name="fade">
+        <img
+          :key="currentSlide"
+          :src="historyImages[currentSlide]"
+          alt="Patient History"
+          class="slideshow__image"
+        />
+      </transition>
+      <div class="slideshow__hint">
+        <span v-if="currentSlide < historyImages.length - 1">
+          Click or Press Enter to continue
+        </span>
+        <span v-else>
+          Click or Press Enter to meet Sem
+        </span>
+      </div>
+      <div class="slideshow__counter">
+        {{ currentSlide + 1 }} / {{ historyImages.length }}
+      </div>
+    </div>
+
+    <!-- Message Section -->
+    <div v-else class="zero-level__message">
       <Message
         :text="messages[currentMessage].text"
         @typing-complete="showHint"
@@ -40,6 +64,22 @@ import moskot1 from '@/assets/images/moskot/moskot1.png'
 import moskot2 from '@/assets/images/moskot/moskot2.png'
 import moskot4 from '@/assets/images/moskot/moskot4.png'
 
+// Import history images for slideshow
+import history0 from '@/assets/images/history/history-0.png'
+import history1 from '@/assets/images/history/history-1.png'
+import history2 from '@/assets/images/history/history-2.png'
+import history3 from '@/assets/images/history/history-3.png'
+import history4 from '@/assets/images/history/history-4.png'
+import history5 from '@/assets/images/history/history-5.png'
+import history6 from '@/assets/images/history/history-6.png'
+import history7 from '@/assets/images/history/history-7.png'
+import history8 from '@/assets/images/history/history-8.png'
+
+const historyImages = [
+  history0, history1, history2, history3, history4,
+  history5, history6, history7, history8
+]
+
 const messages = ref([
   { text: 'Hello, I am Sem.', moskotSrc: moskot4 },
   { text: 'I am an astronaut who knows how to use cosmos information to benefit farming.', moskotSrc: moskot2 },
@@ -48,9 +88,20 @@ const messages = ref([
 ])
 
 const router = useRouter()
+const showSlideshow = ref(true)
+const currentSlide = ref(0)
 const currentMessage = ref(0)
 const showHintText = ref(false)
 const canAdvance = ref(false)
+
+const nextSlide = () => {
+  if (currentSlide.value < historyImages.length - 1) {
+    currentSlide.value++
+  } else {
+    // End slideshow and start messages
+    showSlideshow.value = false
+  }
+}
 
 const showHint = () => {
   canAdvance.value = true
@@ -92,7 +143,11 @@ const onKeyDown = (e) => {
   const key = e.key
   if (key === 'Enter') {
     e.preventDefault()
-    nextMessage()
+    if (showSlideshow.value) {
+      nextSlide()
+    } else {
+      nextMessage()
+    }
   }
 }
 
@@ -257,5 +312,84 @@ onBeforeUnmount(() => {
     opacity: 1;
     transform: translateY(-50%) scale(1.2);
   }
+}
+
+/* Slideshow Styles */
+.slideshow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.95);
+  cursor: pointer;
+  z-index: 1000;
+}
+
+.slideshow__image {
+  max-width: 90%;
+  max-height: 90%;
+  object-fit: contain;
+  box-shadow: 0 0 50px rgba(0, 255, 255, 0.3);
+  border-radius: 8px;
+}
+
+.slideshow__hint {
+  position: fixed;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #00ffff;
+  font-family: 'Courier New', 'Monaco', monospace;
+  font-size: 1rem;
+  font-weight: 400;
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.8), rgba(20, 20, 40, 0.9));
+  border: 1px solid rgba(0, 255, 255, 0.3);
+  border-radius: 8px;
+  padding: 12px 24px;
+  backdrop-filter: blur(10px);
+  box-shadow: 
+    0 0 20px rgba(0, 255, 255, 0.2),
+    inset 0 0 20px rgba(0, 255, 255, 0.1);
+  animation: cosmic-hint 3s ease-in-out infinite;
+}
+
+.slideshow__counter {
+  position: fixed;
+  top: 5%;
+  right: 5%;
+  color: #00ffff;
+  font-family: 'Courier New', 'Monaco', monospace;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+/* Fade Transition */
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.6s ease-in-out;
+}
+
+.fade-enter-from {
+  opacity: 0;
+}
+
+.fade-leave-to {
+  opacity: 0;
+}
+
+.fade-enter-to {
+  opacity: 1;
 }
 </style>

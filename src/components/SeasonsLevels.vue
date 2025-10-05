@@ -19,9 +19,10 @@
               <div class="row">
                 <span class="badge">#{{ challenge.level }}</span>
                 <h3 class="title">{{ challenge.title }}</h3>
+                <span v-if="hasMaxScore(challenge.level)" class="crown" title="Max score achieved">👑</span>
               </div>
               <p class="desc">{{ challenge.description }}</p>
-              <div class="score">Score: <strong>{{ getBestScore(challenge.level) }}</strong></div>
+              <div class="score">Score: <strong>{{ getBestScore(challenge.level) }}</strong> / <strong>{{ getMaxScore(challenge.level) }}</strong></div>
               <div class="actions">
                 <button
                   v-if="season.unlocked"
@@ -148,6 +149,30 @@ function getBestScore(levelNum) {
   }
 }
 
+function getMaxScore(levelNum) {
+  try {
+    const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}')
+    const key = `level${levelNum}`
+    return levelsProgress[key]?.maxPoint ?? 100
+  } catch (_) {
+    return 100
+  }
+}
+
+function hasMaxScore(levelNum) {
+  try {
+    const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}')
+    const key = `level${levelNum}`
+    const rec = levelsProgress[key]
+    if (!rec) return false
+    const maxPoint = typeof rec.maxPoint === 'number' ? rec.maxPoint : 100
+    const currentPoint = typeof rec.currentPoint === 'number' ? rec.currentPoint : 0
+    return currentPoint >= maxPoint && completedSet.value.has(levelNum)
+  } catch (_) {
+    return false
+  }
+}
+
 onMounted(() => {
   const onStorage = (e) => {
     if (e.key === 'levelsCompleted' || e.key === 'levelsProgress') bumpStorageVersion()
@@ -239,6 +264,7 @@ h1 { color: #e0ecff; font-weight: 800; letter-spacing: 0.5px; }
 .row { display: flex; align-items: center; gap: 8px; }
 .badge { background: #0e1220; color: #a7c4ff; border: 1px solid #2a3b6f; border-radius: 9999px; padding: 2px 8px; font-weight: 700; }
 .title { color: #e6ebff; font-weight: 800; }
+.crown { margin-left: 6px; font-size: 16px; }
 .desc { color: #9db0d8; font-size: 14px; }
 .score { color: #a7c4ff; font-size: 14px; }
 
