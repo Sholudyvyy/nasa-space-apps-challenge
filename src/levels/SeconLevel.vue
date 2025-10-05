@@ -89,7 +89,6 @@ function scrollToBottom() {
 }
 
 function handleCorrectAnswer(quizId, correctMessage, points) {
-  console.log('✅ Correct answer!');
   hasActiveQuiz.value = false;
   
   try {
@@ -98,7 +97,6 @@ function handleCorrectAnswer(quizId, correctMessage, points) {
     const currentPoints = parseInt(sessionStorage.getItem(currentKey) || '0');
     const newPoints = currentPoints + points;
     sessionStorage.setItem(currentKey, newPoints.toString());
-    console.log(`🎯 Level ${LEVEL_ID}: Added ${points} points! Current: ${newPoints}`);
     
     const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}');
     const levelKey = `level${LEVEL_ID}`;
@@ -111,21 +109,18 @@ function handleCorrectAnswer(quizId, correctMessage, points) {
     if (newPoints > bestScore) {
       levelsProgress[levelKey].currentPoint = newPoints;
       localStorage.setItem('levelsProgress', JSON.stringify(levelsProgress));
-      console.log(`🏆 Level ${LEVEL_ID}: New best score: ${newPoints}!`);
     }
     
     window.dispatchEvent(new CustomEvent('points-updated', { 
       detail: { levelId: LEVEL_ID } 
     }));
   } catch (error) {
-    console.error('Error saving points:', error);
   }
   
   replaceQuizWithMessage(quizId, correctMessage);
 }
 
 function handleWrongAnswer(quizId, wrongMessage) {
-  console.log('❌ Wrong answer!');
   hasActiveQuiz.value = false;
   replaceQuizWithMessage(quizId, wrongMessage);
 }
@@ -146,7 +141,6 @@ function replaceQuizWithMessage(quizId, messageText) {
 function handleKeydown(e) {
   if (e.key === 'Enter') {
     if (hasActiveQuiz.value) {
-      console.log('⚠️ Please answer the quiz before continuing');
       return;
     }
     
@@ -182,7 +176,6 @@ function markLevelCompleted() {
     if (!levelsCompleted.includes(LEVEL_ID)) {
       levelsCompleted.push(LEVEL_ID);
       localStorage.setItem('levelsCompleted', JSON.stringify(levelsCompleted));
-      console.log(`✅ Level ${LEVEL_ID} completed and saved!`);
     }
     
     sessionStorage.setItem('allowLevelNav', Date.now().toString());
@@ -191,7 +184,6 @@ function markLevelCompleted() {
       router.push(`/level${LEVEL_ID + 1}`);
     }, 1000);
   } catch (error) {
-    console.error('Error saving level completion:', error);
   }
 }
 

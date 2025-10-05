@@ -164,7 +164,6 @@ onUnmounted(() => {
 });
 
 const openLevelSelector = () => {
-  console.log("Seasons button clicked");
   window.dispatchEvent(new CustomEvent("open-level-selector"));
 };
 
