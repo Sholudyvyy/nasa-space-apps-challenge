@@ -1,5 +1,6 @@
 <template>
   <div class="level">
+    <button class="menu-btn" @click="goMenu">Menu</button>
     <!-- Points Counter -->
     <div class="points-counter">
       <div class="points-content">
@@ -21,164 +22,173 @@
     </div>
 
     <div class="chat-panel">
-      <slot name="chat">
-      </slot>
+      <slot name="chat"> </slot>
     </div>
 
     <div class="bottom-nav">
-      <button class="nav-btn" :disabled="!canGoPrev" @click="goPrev">Prev</button>
+      <button class="nav-btn" :disabled="!canGoPrev" @click="goPrev">
+        Prev
+      </button>
       <div class="nav-status">Level {{ currentLevelDisplay }}</div>
-      <button class="nav-btn" :disabled="!canGoNext" @click="goNext">Next</button>
+      <button class="nav-btn" :disabled="!canGoNext" @click="goNext">
+        Next
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
+import { useRoute, useRouter } from "vue-router";
 
 // Props
 const props = defineProps({
   levelId: {
     type: [String, Number],
-    required: true
-  }
-})
+    required: true,
+  },
+});
 
 // Points state
-const currentPoints = ref(0)
-const bestScore = ref(0)
+const currentPoints = ref(0);
+const bestScore = ref(0);
 
 // Load points for this specific level
 const loadPoints = () => {
-  const currentKey = `currentPoints_level${props.levelId}`
-  currentPoints.value = parseInt(sessionStorage.getItem(currentKey) || '0')
+  const currentKey = `currentPoints_level${props.levelId}`;
+  currentPoints.value = parseInt(sessionStorage.getItem(currentKey) || "0");
 
   try {
-    const levelsProgress = JSON.parse(localStorage.getItem('levelsProgress') || '{}')
-    const levelKey = `level${props.levelId}`
-    bestScore.value = levelsProgress[levelKey]?.currentPoint || 0
+    const levelsProgress = JSON.parse(
+      localStorage.getItem("levelsProgress") || "{}"
+    );
+    const levelKey = `level${props.levelId}`;
+    bestScore.value = levelsProgress[levelKey]?.currentPoint || 0;
   } catch (error) {
-    console.error('Error loading levelsProgress:', error)
-    bestScore.value = 0
+    console.error("Error loading levelsProgress:", error);
+    bestScore.value = 0;
   }
-}
+};
 
 // Listeners for points updates
 const handleStorageChange = (e) => {
-  if (e.key === 'levelsProgress') {
-    loadPoints()
+  if (e.key === "levelsProgress") {
+    loadPoints();
   }
-}
+};
 
 const handlePointsUpdate = (e) => {
   if (e.detail && e.detail.levelId === props.levelId) {
-    loadPoints()
+    loadPoints();
   }
-}
+};
 
-let intervalId
+let intervalId;
 onMounted(() => {
-  const currentKey = `currentPoints_level${props.levelId}`
-  sessionStorage.setItem(currentKey, '0')
-  loadPoints()
+  const currentKey = `currentPoints_level${props.levelId}`;
+  sessionStorage.setItem(currentKey, "0");
+  loadPoints();
 
-  window.addEventListener('storage', handleStorageChange)
-  window.addEventListener('points-updated', handlePointsUpdate)
+  window.addEventListener("storage", handleStorageChange);
+  window.addEventListener("points-updated", handlePointsUpdate);
 
   // Poll for same-window updates
-  intervalId = setInterval(loadPoints, 100)
-})
+  intervalId = setInterval(loadPoints, 100);
+});
 
 onBeforeUnmount(() => {
-  window.removeEventListener('storage', handleStorageChange)
-  window.removeEventListener('points-updated', handlePointsUpdate)
-  if (intervalId) clearInterval(intervalId)
-})
+  window.removeEventListener("storage", handleStorageChange);
+  window.removeEventListener("points-updated", handlePointsUpdate);
+  if (intervalId) clearInterval(intervalId);
+});
 
 // Navigation / level progression
-const route = useRoute()
-const router = useRouter()
+const route = useRoute();
+const router = useRouter();
 
 function parseCurrentLevel() {
-  const match = route.path.match(/\/level(\d+)/)
-  return match ? parseInt(match[1], 10) : NaN
+  const match = route.path.match(/\/level(\d+)/);
+  return match ? parseInt(match[1], 10) : NaN;
 }
 
 function getCompletedSet() {
   try {
-    const raw = localStorage.getItem('levelsCompleted')
-    const arr = raw ? JSON.parse(raw) : []
-    return new Set(Array.isArray(arr) ? arr : [])
+    const raw = localStorage.getItem("levelsCompleted");
+    const arr = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(arr) ? arr : []);
   } catch (_) {
-    return new Set()
+    return new Set();
   }
 }
 
 function getHighestUnlockedPairEnd() {
-  let highestEnd = 2
-  const completed = getCompletedSet()
-  const pairStarts = [1, 3, 5, 7]
+  let highestEnd = 2;
+  const completed = getCompletedSet();
+  const pairStarts = [1, 3, 5, 7];
   for (let i = 0; i < pairStarts.length; i++) {
-    const a = pairStarts[i]
-    const b = a + 1
+    const a = pairStarts[i];
+    const b = a + 1;
     if (i === 0) {
       if (completed.has(a) && completed.has(b)) {
-        highestEnd = b
-        continue
+        highestEnd = b;
+        continue;
       } else {
-        highestEnd = 2
-        break
+        highestEnd = 2;
+        break;
       }
     } else {
-      const prevA = pairStarts[i - 1]
-      const prevB = prevA + 1
-      const prevDone = completed.has(prevA) && completed.has(prevB)
-      if (!prevDone) break
-      highestEnd = b
-      const currDone = completed.has(a) && completed.has(b)
-      if (!currDone) break
+      const prevA = pairStarts[i - 1];
+      const prevB = prevA + 1;
+      const prevDone = completed.has(prevA) && completed.has(prevB);
+      if (!prevDone) break;
+      highestEnd = b;
+      const currDone = completed.has(a) && completed.has(b);
+      if (!currDone) break;
     }
   }
-  return highestEnd
+  return highestEnd;
 }
 
-const currentLevel = computed(() => parseCurrentLevel())
-const highestEnd = computed(() => getHighestUnlockedPairEnd())
+const currentLevel = computed(() => parseCurrentLevel());
+const highestEnd = computed(() => getHighestUnlockedPairEnd());
 
 const canGoPrev = computed(() => {
-  const n = currentLevel.value
-  if (!Number.isFinite(n)) return false
-  return n > 1
-})
+  const n = currentLevel.value;
+  if (!Number.isFinite(n)) return false;
+  return n > 1;
+});
 
 const canGoNext = computed(() => {
-  const n = currentLevel.value
-  if (!Number.isFinite(n)) return false
-  return n + 1 <= highestEnd.value
-})
+  const n = currentLevel.value;
+  if (!Number.isFinite(n)) return false;
+  return n + 1 <= highestEnd.value;
+});
 
 const currentLevelDisplay = computed(() => {
-  const n = currentLevel.value
-  return Number.isFinite(n) ? n : '-'
-})
+  const n = currentLevel.value;
+  return Number.isFinite(n) ? n : "-";
+});
 
 function navigateToLevel(n) {
-  if (!Number.isFinite(n)) return
+  if (!Number.isFinite(n)) return;
   try {
-    sessionStorage.setItem('allowLevelNav', String(Date.now()))
+    sessionStorage.setItem("allowLevelNav", String(Date.now()));
   } catch (_) {}
-  router.push(`/level${n}`)
+  router.push(`/level${n}`);
 }
 
 function goPrev() {
-  const n = currentLevel.value
-  if (Number.isFinite(n) && n > 1) navigateToLevel(n - 1)
+  const n = currentLevel.value;
+  if (Number.isFinite(n) && n > 1) navigateToLevel(n - 1);
 }
 
 function goNext() {
-  const n = currentLevel.value
-  if (Number.isFinite(n) && n + 1 <= highestEnd.value) navigateToLevel(n + 1)
+  const n = currentLevel.value;
+  if (Number.isFinite(n) && n + 1 <= highestEnd.value) navigateToLevel(n + 1);
+}
+
+function goMenu() {
+  router.push('/')
 }
 </script>
 
@@ -205,7 +215,11 @@ function goNext() {
 
 .points-content {
   pointer-events: auto;
-  background: linear-gradient(135deg, rgba(20, 30, 50, 0.9), rgba(30, 40, 60, 0.9));
+  background: linear-gradient(
+    135deg,
+    rgba(20, 30, 50, 0.9),
+    rgba(30, 40, 60, 0.9)
+  );
   border: 2px solid rgba(74, 158, 255, 0.5);
   border-radius: 12px;
   padding: 12px 24px;
@@ -213,9 +227,7 @@ function goNext() {
   flex-direction: column;
   align-items: center;
   gap: 4px;
-  box-shadow: 
-    0 4px 20px rgba(0, 0, 0, 0.5),
-    0 0 20px rgba(74, 158, 255, 0.3),
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 20px rgba(74, 158, 255, 0.3),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
   backdrop-filter: blur(10px);
   animation: glow-pulse 3s ease-in-out infinite;
@@ -234,8 +246,7 @@ function goNext() {
   color: #fff;
   font-size: 1.75rem;
   font-weight: bold;
-  text-shadow: 
-    0 2px 8px rgba(74, 158, 255, 0.8),
+  text-shadow: 0 2px 8px rgba(74, 158, 255, 0.8),
     0 0 15px rgba(74, 158, 255, 0.5);
   transition: all 0.3s ease;
 }
@@ -251,16 +262,13 @@ function goNext() {
 }
 
 @keyframes glow-pulse {
-  0%, 100% {
-    box-shadow: 
-      0 4px 20px rgba(0, 0, 0, 0.5),
-      0 0 20px rgba(74, 158, 255, 0.3),
+  0%,
+  100% {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 20px rgba(74, 158, 255, 0.3),
       inset 0 1px 0 rgba(255, 255, 255, 0.1);
   }
   50% {
-    box-shadow: 
-      0 4px 25px rgba(0, 0, 0, 0.6),
-      0 0 30px rgba(74, 158, 255, 0.5),
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6), 0 0 30px rgba(74, 158, 255, 0.5),
       inset 0 1px 0 rgba(255, 255, 255, 0.15);
   }
 }
@@ -284,6 +292,7 @@ function goNext() {
   height: 100%;
   pointer-events: none;
   object-fit: fill;
+  z-index: 2;
 }
 
 /* Adjust these values */
@@ -303,6 +312,59 @@ function goNext() {
   height: 100%;
   padding: 20px;
   box-sizing: border-box;
+  position: relative;
+}
+
+/* Ensure level images render within the inner container */
+.inner .image-container {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+.inner .level-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Raise the image link slightly above the bottom and over the image */
+::slotted(.image-link-container) {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 50px !important;
+  z-index: 10002;
+}
+/* Fallback override for scoped child styles */
+.inner :deep(.image-link-container) {
+  position: absolute !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  bottom: 70px !important;
+  z-index: 10002 !important;
+}
+/* Style slotted level content inside this layout */
+:slotted(.image-container) {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+:slotted(.level-image) {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* Ensure all other slot content appears above the photo */
+.inner > :not(.image-container) {
+  position: relative;
+  z-index: 1;
 }
 
 .placeholder {
@@ -323,6 +385,7 @@ function goNext() {
   border-radius: 9999px;
   padding: 8px 14px;
   backdrop-filter: blur(6px);
+  z-index: 10001;
 }
 
 .nav-btn {
@@ -342,6 +405,19 @@ function goNext() {
 .nav-status {
   color: #cfe0ff;
   font-weight: 700;
+}
+
+.menu-btn {
+  position: absolute;
+  top: 5px;
+  left: 650px;
+  padding: 8px 14px;
+  border-radius: 9999px;
+  border: 1px solid rgba(120, 180, 255, 0.35);
+  background: #1a2a55;
+  color: #e8f3ff;
+  cursor: pointer;
+  z-index: 10001;
 }
 
 .game-content {
