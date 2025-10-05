@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import Menu from '../levels/Menu.vue'
 import Level0 from '../levels/ZeroLevel.vue'
 import FirstLevel from '../levels/FirstLevel.vue'
 import SeconLevel from '../levels/SeconLevel.vue'
@@ -15,8 +16,8 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'Level0',
-      component: Level0
+      name: 'Menu',
+      component: Menu
     },
     {
       path: '/level0',
