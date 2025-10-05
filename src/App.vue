@@ -53,9 +53,7 @@
 
     <div class="view" :class="{ 'fade-out': isHyperspace }">
       <router-view v-slot="{ Component }">
-        <transition name="page" mode="out-in">
-          <component :is="Component" />
-        </transition>
+        <component :is="Component" :key="$route.fullPath" />
       </router-view>
     </div>
     <audio ref="bgMusic" loop autoplay>
@@ -257,25 +255,15 @@ html {
 .view {
   position: relative;
   transition: opacity 0.4s ease;
+  width: 100%;
+  height: 100%;
 }
 
 .view.fade-out {
   opacity: 0;
 }
 
-// Route transition (new page fade-in)
-.page-enter-active {
-  transition: opacity 0.5s ease 0.1s;
-}
-
-.page-leave-active {
-  transition: opacity 0.2s ease;
-}
-
-.page-enter-from,
-.page-leave-to {
-  opacity: 0;
-}
+// Route transition removed - instant page switching
 
 // Animations
 @keyframes zoom {
