@@ -310,7 +310,7 @@ html {
 .settings-button {
   position: fixed;
   top: 20px;
-  left: 20px;
+  right: 20px;
   background: none;
   border: none;
   cursor: pointer;
