@@ -4,8 +4,8 @@
 
     <div class="menu-buttons">
       <h1 class="menu-title">{{ titleText }}</h1>
-      <button class="play-button" @click="startGame">Play</button>
-      <button class="seasons-button" @click="openLevelSelector">Seasons</button>
+      <button class="play-button" @click="startGame">Introduction</button>
+      <button class="seasons-button" @click="openLevelSelector">Play</button>
       <button class="more-info-button" @click="showMoreInfo = true">
         More info
       </button>
@@ -235,7 +235,7 @@ $bg-color: #000;
   align-items: center;
   justify-content: center;
   width: 200px;
-  height: 80px;
+  height: 70px;
   background: linear-gradient(145deg, #e0e0e0, #c0c0c0);
   border: none;
   border-radius: 15px;
@@ -266,13 +266,13 @@ $bg-color: #000;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 190px;
-  height: 70px;
+  width: 220px;
+  height: 80px;
   background: linear-gradient(145deg, #e0e0e0, #c0c0c0);
   border: none;
   border-radius: 12px;
   color: #000;
-  font-size: 20px;
+  font-size: 35px;
   font-weight: bold;
   font-family: sans-serif;
   cursor: pointer;
