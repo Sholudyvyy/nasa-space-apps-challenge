@@ -69,7 +69,7 @@ const messageTexts = [
   { type: "message", text: "One more challenge!" },
   {
     type: "quiz",
-    question: "What technology used on satellites (such as Sentinel-1 or the upcoming NISAR) allows them to **“see” through clouds, smoke, and at night**, and is particularly useful for monitoring winter crops in winter?",
+    question: "What technology used on satellites (such as Sentinel-1 or the upcoming NISAR) allows them to “see” through clouds, smoke, and at night, and is particularly useful for monitoring winter crops in winter?",
     variants: [
       { type: "text", content: "Hyperspectral imaging" },
       { type: "text", content: "Synthetic aperture radar (SAR)" },
