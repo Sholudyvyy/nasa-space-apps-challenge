@@ -43,6 +43,9 @@ import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import LevelSelector from './LevelSelector.vue'
 
+// Set page title
+document.title = "Levels - Space Farming";
+
 // Level thumbnails
 import L1 from '@/assets/lvls/1lvl.png'
 import L2 from '@/assets/lvls/2lvl.png'

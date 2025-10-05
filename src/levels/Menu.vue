@@ -85,6 +85,9 @@ import moskot2 from "@/assets/images/moskot/moskot2.png";
 import moskot1 from "@/assets/images/moskot/moskot1.png";
 import moskot from "@/assets/images/moskot/moskot.png";
 
+// Set page title
+document.title = "Space Farming Adventure";
+
 // Random rotating title per page load
 const titleOptions = [
   "Harvest Among Stars ✨",

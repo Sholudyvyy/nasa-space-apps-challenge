@@ -61,6 +61,10 @@ import { ref, onMounted, onBeforeUnmount, watch, nextTick } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+
+// Set page title
+document.title = "Solar Reaping - Level 3";
+
 const LEVEL_ID = 3;
 
 const messageTexts = [
