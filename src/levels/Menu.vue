@@ -2,14 +2,6 @@
   <div class="menu">
     <div class="stars"></div>
 
-    <button class="settings-button">
-      <img
-        src="@/assets/images/settings.png"
-        alt="Settings"
-        class="settings-icon"
-      />
-    </button>
-
     <div class="menu-buttons">
       <h1 class="menu-title">{{ titleText }}</h1>
       <router-link to="/level0" class="play-button">Play</router-link>
@@ -120,34 +112,6 @@ $bg-color: #000;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-}
-
-.settings-button {
-  position: absolute;
-  top: 20px;
-  left: 20px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
-  border-radius: 50%;
-  z-index: 2;
-  transition: background-color 0.3s ease;
-
-  &:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-  }
-}
-
-.settings-icon {
-  width: 30px;
-  height: 30px;
-  filter: invert(1);
-  transition: transform 0.3s ease;
-}
-
-.settings-button:hover .settings-icon {
-  transform: rotate(30deg);
 }
 
 .menu-title {

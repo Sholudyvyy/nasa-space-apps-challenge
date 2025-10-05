@@ -1,6 +1,51 @@
 <template>
   <div id="app">
     <div class="stars" :class="{ hyperspace: isHyperspace }"></div>
+
+    <!-- Settings button -->
+    <button
+      v-if="!showSettings"
+      class="settings-button"
+      @click="showSettings = true"
+    >
+      <img
+        src="@/assets/images/settings.png"
+        alt="Settings"
+        class="settings-icon"
+      />
+    </button>
+
+    <!-- Settings popup -->
+    <div v-if="showSettings" class="settings-popup">
+      <div class="settings-content">
+        <h3>Settings</h3>
+
+        <div class="setting-item">
+          <label>Music Volume</label>
+          <input
+            type="range"
+            min="0"
+            max="100"
+            v-model="volume"
+            @input="updateVolume"
+            class="volume-slider"
+          />
+          <span class="volume-value">{{ volume }}%</span>
+        </div>
+
+        <div class="setting-item">
+          <label>
+            <input type="checkbox" v-model="isMuted" @change="toggleMute" />
+            Mute Music
+          </label>
+        </div>
+
+        <button class="close-button" @click="showSettings = false">
+          Close
+        </button>
+      </div>
+    </div>
+
     <div class="view" :class="{ 'fade-out': isHyperspace }">
       <router-view v-slot="{ Component }">
         <transition name="page" mode="out-in">
@@ -19,6 +64,14 @@ import { ref, onMounted, onBeforeUnmount } from "vue";
 
 const isHyperspace = ref(false);
 const bgMusic = ref(null);
+const showSettings = ref(false);
+
+// Load volume from localStorage or use default
+const savedVolume = localStorage.getItem("musicVolume");
+const savedMuted = localStorage.getItem("musicMuted");
+const volume = ref(savedVolume !== null ? parseInt(savedVolume) : 90);
+const isMuted = ref(savedMuted === "true");
+let previousVolume = savedVolume !== null ? parseInt(savedVolume) : 90;
 
 const handleHyperspaceStart = (e) => {
   isHyperspace.value = true;
@@ -28,12 +81,59 @@ const handleHyperspaceEnd = () => {
   isHyperspace.value = false;
 };
 
+const updateVolume = () => {
+  if (bgMusic.value) {
+    if (parseInt(volume.value) === 0) {
+      isMuted.value = true;
+      bgMusic.value.volume = 0;
+    } else {
+      isMuted.value = false;
+      bgMusic.value.volume = volume.value / 100;
+      previousVolume = volume.value;
+    }
+    // Save to localStorage
+    localStorage.setItem("musicVolume", volume.value.toString());
+    localStorage.setItem("musicMuted", isMuted.value.toString());
+  }
+};
+
+const toggleMute = () => {
+  if (bgMusic.value) {
+    if (isMuted.value) {
+      // When muting, just mute the audio but keep volume slider value
+      bgMusic.value.volume = 0;
+      if (volume.value > 0) {
+        previousVolume = volume.value;
+      }
+    } else {
+      // When unmuting, restore audio volume from slider
+      if (volume.value > 0) {
+        bgMusic.value.volume = volume.value / 100;
+      } else {
+        // If slider is at 0, restore to previous or default
+        const volumeToRestore = previousVolume > 0 ? previousVolume : 90;
+        volume.value = volumeToRestore;
+        bgMusic.value.volume = volumeToRestore / 100;
+      }
+    }
+    // Save to localStorage
+    localStorage.setItem("musicVolume", volume.value.toString());
+    localStorage.setItem("musicMuted", isMuted.value.toString());
+  }
+};
+
 onMounted(() => {
   window.addEventListener("hyperspace-start", handleHyperspaceStart);
   window.addEventListener("hyperspace-end", handleHyperspaceEnd);
 
   if (bgMusic.value) {
-    bgMusic.value.volume = 0.9;
+    // Apply saved volume and mute state
+    if (isMuted.value || volume.value === 0) {
+      bgMusic.value.volume = 0;
+    } else {
+      bgMusic.value.volume = volume.value / 100;
+    }
+
     bgMusic.value.play().catch(() => {
       const playOnInteraction = () => {
         bgMusic.value?.play();
@@ -189,6 +289,187 @@ html {
     transform: scale(6);
     opacity: 0;
     filter: brightness(1) blur(0.6px);
+  }
+}
+
+// Settings button
+.settings-button {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+  border-radius: 50%;
+  z-index: 1000;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+  }
+}
+
+.settings-icon {
+  width: 30px;
+  height: 30px;
+  filter: invert(1);
+  transition: transform 0.3s ease;
+}
+
+.settings-button:hover .settings-icon {
+  transform: rotate(30deg);
+}
+
+// Settings popup
+.settings-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 15, 30, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(15px);
+}
+
+.settings-content {
+  background: rgba(20, 30, 50, 0.6);
+  border: 2px solid #4a8fd4;
+  padding: 40px;
+  border-radius: 20px;
+  min-width: 400px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8), 0 0 20px rgba(74, 143, 212, 0.5),
+    0 0 40px rgba(74, 143, 212, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+
+  h3 {
+    color: #fff;
+    margin: 0 0 30px 0;
+    font-size: 32px;
+    text-align: center;
+    font-weight: bold;
+    text-shadow: 0 2px 10px rgba(100, 150, 255, 0.8),
+      0 0 20px rgba(100, 150, 255, 0.6);
+    letter-spacing: 1px;
+  }
+}
+
+.setting-item {
+  background: rgba(30, 40, 60, 0.4);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(106, 179, 255, 0.4);
+  box-shadow: 0 0 10px rgba(106, 179, 255, 0.2);
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: rgba(40, 50, 70, 0.5);
+    border-color: rgba(106, 179, 255, 0.8);
+    box-shadow: 0 0 15px rgba(106, 179, 255, 0.4),
+      0 0 30px rgba(106, 179, 255, 0.2);
+  }
+
+  label {
+    color: #d0e0ff;
+    display: block;
+    margin-bottom: 15px;
+    font-size: 18px;
+    font-weight: 600;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+  }
+
+  input[type="checkbox"] {
+    margin-right: 12px;
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+    accent-color: #5a9fd4;
+  }
+}
+
+.volume-slider {
+  width: 100%;
+  height: 10px;
+  border-radius: 5px;
+  background: linear-gradient(
+    to right,
+    rgba(50, 60, 80, 0.8) 0%,
+    rgba(70, 90, 120, 0.8) 100%
+  );
+  outline: none;
+  -webkit-appearance: none;
+  box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.5);
+
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #6ab3ff, #4a8fd4);
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(106, 179, 255, 0.3);
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6),
+        0 0 0 4px rgba(106, 179, 255, 0.5);
+    }
+  }
+
+  &::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: linear-gradient(145deg, #6ab3ff, #4a8fd4);
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.5), 0 0 0 3px rgba(106, 179, 255, 0.3);
+    transition: all 0.2s ease;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+  }
+}
+
+.volume-value {
+  color: #6ab3ff;
+  margin-left: 15px;
+  font-weight: bold;
+  font-size: 18px;
+  text-shadow: 0 2px 5px rgba(0, 0, 0, 0.5);
+}
+
+.close-button {
+  width: 100%;
+  padding: 15px;
+  margin-top: 20px;
+  background: linear-gradient(145deg, #4a8fd4, #3a6fa4);
+  border: 2px solid rgba(100, 150, 200, 0.3);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 15px rgba(74, 143, 212, 0.3);
+
+  &:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(74, 143, 212, 0.5);
+    background: linear-gradient(145deg, #5a9fe4, #4a7fb4);
+  }
+
+  &:active {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 15px rgba(74, 143, 212, 0.4);
   }
 }
 </style>
