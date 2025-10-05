@@ -200,6 +200,7 @@ h1 { color: #e0ecff; font-weight: 800; letter-spacing: 0.5px; }
   display: flex;
   align-items: center;
   justify-content: space-between;
+  color: #e0ecff;
   margin-bottom: 12px;
 }
 
