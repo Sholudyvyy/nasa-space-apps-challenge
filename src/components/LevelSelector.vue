@@ -60,16 +60,10 @@ const isOpen = ref(false);
 watch(
   () => props.externalOpen,
   (newVal) => {
-    console.log("LevelSelector externalOpen changed to:", newVal);
     isOpen.value = newVal;
   },
   { immediate: true }
 );
-
-// Watch isOpen for debugging
-watch(isOpen, (newVal, oldVal) => {
-  console.log("LevelSelector isOpen changed:", oldVal, "->", newVal);
-});
 
 // Season preview images from src/assets/images/s
 // Note: filenames are case-sensitive
